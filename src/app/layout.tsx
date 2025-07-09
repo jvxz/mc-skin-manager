@@ -8,10 +8,8 @@ export const metadata: Metadata = meta
 
 export default function RootLayout({
   children,
-  navbar,
 }: Readonly<{
   children: React.ReactNode
-  navbar: React.ReactNode
 }>) {
   return (
     <html lang="en" className={`${sans.variable} ${mono.variable}`}>
@@ -25,12 +23,7 @@ export default function RootLayout({
         </head>
       )}
       <body className="antialiased">
-        <Providers>
-          <div className="flex h-screen flex-col">
-            {navbar}
-            {children}
-          </div>
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   )

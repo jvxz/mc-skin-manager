@@ -1,5 +1,6 @@
 'use client'
 import { Virtuoso } from 'react-virtuoso'
+import { SkinViewer } from '@/components/skin-viewer'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -49,7 +50,9 @@ export default function Page() {
           )}
         />
       </div>
-      <div className="w-full "></div>
+      <div className="w-full grid place-items-center">
+        <SkinViewer />
+      </div>
     </div>
   )
 }
