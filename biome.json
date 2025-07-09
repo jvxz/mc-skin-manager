@@ -48,18 +48,14 @@
         }
       },
       "recommended": true,
-      "style": {
-        "useSelfClosingElements": {
-          "fix": "safe",
-          "level": "warn",
-          "options": {}
-        }
-      },
       "suspicious": {
         "noConsole": {
           "level": "error",
           "options": {
-            "allow": ["warn", "error"]
+            "allow": [
+              "warn",
+              "error"
+            ]
           }
         }
       }
@@ -70,7 +66,12 @@
       "formatter": {
         "enabled": false
       },
-      "includes": [".next/**", "node_modules/**", "public/**", "dist/**"],
+      "includes": [
+        ".next/**",
+        "node_modules/**",
+        "public/**",
+        "dist/**"
+      ],
       "linter": {
         "enabled": false
       }
