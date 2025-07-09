@@ -1,3 +1,4 @@
+'use client'
 import { useCallback } from 'react'
 import ReactSkinview3d, {
   type ViewerReadyCallbackOptions,
