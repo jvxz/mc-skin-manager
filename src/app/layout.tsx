@@ -26,7 +26,7 @@ export default function RootLayout({
       )}
       <body className="antialiased">
         <Providers>
-          <div className="flex flex-col">
+          <div className="flex h-screen flex-col">
             {navbar}
             {children}
           </div>
