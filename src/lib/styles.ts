@@ -1,5 +1,5 @@
 const interactiveStyles = {
-  base: 'focus-visible:border-primary/50 select-none focus-visible:ring-ring/40 focus-visible:ring-[3px] active:ring-ring/60 aria-invalid:ring-destructive/20 aria-invalid:border-destructive dark:aria-invalid:ring-destructive/40 shrink-0 gap-2 rounded text-base whitespace-nowrap outline-none disabled:pointer-events-none hover:disabled:cursor-not-allowed disabled:opacity-50 underline-offset-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4',
+  base: 'focus-visible:border-primary/50 select-none font-medium focus-visible:ring-ring/40 focus-visible:ring-[3px] active:ring-ring/60 aria-invalid:ring-destructive/20 aria-invalid:border-destructive dark:aria-invalid:ring-destructive/40 shrink-0 gap-2 rounded text-base whitespace-nowrap outline-none disabled:pointer-events-none hover:disabled:cursor-not-allowed disabled:opacity-50 underline-offset-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4',
   size: {
     default: 'h-8 px-3 py-1.5 text-sm',
     icon: 'aspect-square size-8',
@@ -19,7 +19,7 @@ const interactiveStyles = {
 }
 
 const staticStyles = {
-  base: 'rounded p-5',
+  base: 'rounded p-3',
   variant: {
     default: 'bg-card border text-card-foreground',
     destructive:
@@ -42,6 +42,6 @@ const popoverStyles = {
 }
 
 const overlayStyles =
-  'data-[state=open]:animate-in data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-overlay backdrop-blur-xs'
+  'data-[state=open]:animate-in data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-overlay'
 
 export { interactiveStyles, overlayStyles, popoverStyles, staticStyles }
