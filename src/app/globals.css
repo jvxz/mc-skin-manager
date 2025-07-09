@@ -127,8 +127,10 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50 font-sans;
+    @apply border-border outline-ring/50 font-sans min-h-0 min-w-0;
     transition-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+    scrollbar-width: thin;
+    scrollbar-color: var(--muted) var(--background);
   }
   body {
     @apply bg-background text-foreground;
