@@ -3,9 +3,11 @@ import { getSkinFromText } from '@/actions/get-skin-from-username'
 import type { Skin } from '@/lib/types'
 import { getSkinTextType } from '@/lib/utils'
 import { useSkinList } from '@/store/skins'
+import { useActiveSkin } from './active-skin'
 
 function useSkinUpload() {
   const { addSkin } = useSkinList()
+  const { setSkin } = useActiveSkin()
   const { mutate: uploadSkin } = useMutation({
     mutationFn: async (input: string | File) => {
       if (typeof input === 'string') {
@@ -25,6 +27,7 @@ function useSkinUpload() {
     },
     onSuccess: data => {
       addSkin(data)
+      setSkin(data)
     },
   })
 
