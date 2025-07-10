@@ -1,17 +1,29 @@
 'use client'
 import { IconUpload } from '@tabler/icons-react'
 import { useForm } from '@tanstack/react-form'
+import { useSkinUpload } from '@/hooks/use-skin-upload'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 
-function SkinImportForm() {
+function SkinImportForm({
+  setIsOpen,
+}: {
+  setIsOpen: (isOpen: boolean) => void
+}) {
+  const { uploadSkin } = useSkinUpload()
   const form = useForm({
     defaultValues: {
       file: null as File | null,
       text: '',
     },
-    onSubmit: values => {
-      console.log(values)
+    onSubmit: ({ value }) => {
+      form.reset()
+      setIsOpen(false)
+      if (value.file) {
+        uploadSkin(value.file)
+      } else {
+        uploadSkin(value.text)
+      }
     },
   })
 
@@ -25,7 +37,7 @@ function SkinImportForm() {
       <form.Field name="text">
         {f => (
           <Input
-            placeholder="Username, link, or UUID..."
+            placeholder="Username, URL, or UUID..."
             onChange={e => f.handleChange(e.target.value)}
             onBlur={f.handleBlur}
             value={f.state.value}
@@ -54,7 +66,7 @@ function SkinImportForm() {
             Upload <IconUpload />
           </label>
         </Button>
-        <Button>Submit</Button>
+        <Button type="submit">Submit</Button>
       </div>
     </form>
   )

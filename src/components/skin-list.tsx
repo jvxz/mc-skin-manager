@@ -1,24 +1,19 @@
 'use client'
 import { Virtuoso } from 'react-virtuoso'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { useSkinList } from '@/store/skins'
+import { SkinCard } from './skin-card'
 
 function SkinList() {
-  const data: string[] = []
+  const { skins } = useSkinList()
 
-  if (data.length === 0) {
+  if (skins.length === 0) {
     return <EmptyState />
   }
 
   return (
     <Virtuoso
       overscan={3}
-      data={data}
+      data={skins}
       className="box-border h-full"
       components={{
         Item: ({ children, ...props }) => (
@@ -27,20 +22,13 @@ function SkinList() {
           </div>
         ),
       }}
-      itemContent={index => (
-        <Card className="">
-          <div className="flex items-center gap-2">
-            <Avatar className="size-[48px]" square>
-              <AvatarImage src="https://github.com/jvxz.png" />
-              <AvatarFallback>JV</AvatarFallback>
-            </Avatar>
-            <CardHeader>
-              <CardTitle>Skin {index}</CardTitle>
-              <CardDescription>slim ⋅ uploaded 10 minutes ago</CardDescription>
-            </CardHeader>
-          </div>
-        </Card>
-      )}
+      itemContent={index => {
+        if (skins[index].type === 'file') {
+          return <div>File</div>
+        }
+
+        return <SkinCard skin={skins[index]} />
+      }}
     />
   )
 }

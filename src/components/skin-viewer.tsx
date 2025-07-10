@@ -5,6 +5,7 @@ import ReactSkinview3d, {
 } from 'react-skinview3d'
 import { PlayerAnimation, type PlayerObject } from 'skinview3d'
 import { DirectionalLight } from 'three'
+import { useActiveSkin } from '@/hooks/active-skin'
 
 class MyAnimation extends PlayerAnimation {
   animate(player: PlayerObject) {
@@ -22,9 +23,13 @@ class MyAnimation extends PlayerAnimation {
 }
 
 function SkinViewer() {
+  const { skin } = useActiveSkin()
+
   const handleReady = useCallback(({ viewer }: ViewerReadyCallbackOptions) => {
+    viewer.controls.enableZoom = false
+
     // all of these three.js properties (except for the camera position)
-    // were taken from the namemc skin viewer
+    // were taken from the namemc skin viewerœ
 
     // clear default camera light
     viewer.cameraLight.clear()
@@ -53,11 +58,16 @@ function SkinViewer() {
       options={{
         animation: new MyAnimation(),
         fov: 35,
+        model: 'auto-detect',
       }}
       width={500}
       onReady={handleReady}
       height={700}
-      skinUrl={'/test-slim.png'}
+      skinUrl={
+        skin?.type === 'file'
+          ? URL.createObjectURL(skin.file)
+          : skin?.skinUrl || '/test-slim.png'
+      }
     />
   )
 }
