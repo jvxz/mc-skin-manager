@@ -64,7 +64,7 @@ function SkinViewer() {
       onReady={handleReady}
       height={700}
       skinUrl={
-        skin?.type === 'file'
+        skin?.inputType === 'file'
           ? URL.createObjectURL(skin.file)
           : skin?.skinUrl || '/test-slim.png'
       }

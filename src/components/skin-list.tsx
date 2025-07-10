@@ -23,7 +23,7 @@ function SkinList() {
         ),
       }}
       itemContent={index => {
-        if (skins[index].type === 'file') {
+        if (skins[index].inputType === 'file') {
           return <div>File</div>
         }
 
