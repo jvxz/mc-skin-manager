@@ -1,32 +1,35 @@
-export type SkinType = 'username' | 'url' | 'uuid' | 'file'
+export type SkinInputType = 'username' | 'url' | 'uuid' | 'file'
 
-export type SkinTypeAsText = Exclude<SkinType, 'file'>
+export type SkinInputTypeAsText = Exclude<SkinInputType, 'file'>
+
+export type SkinType = 'slim' | 'classic'
 
 interface SkinBase {
   id: string
-  type: SkinType
+  inputType: SkinInputType
+  skinType: SkinType
 }
 
 interface SkinAsFile extends SkinBase {
   file: File
-  type: 'file'
+  inputType: 'file'
 }
 
 interface SkinAsUrl extends SkinBase {
   skinUrl: string
-  type: 'url'
+  inputType: 'url'
 }
 
 interface SkinAsUsername extends SkinBase {
   skinUrl: string
-  type: 'username'
+  inputType: 'username'
   username: string
   uuid: string
 }
 
 interface SkinAsUuid extends SkinBase {
   skinUrl: string
-  type: 'uuid'
+  inputType: 'uuid'
   uuid: string
   username: string
 }

@@ -38,6 +38,7 @@
     "radix-ui": "^1.4.2",
     "react-skinview3d": "^6.0.0",
     "react-virtuoso": "^4.13.0",
+    "sharp": "^0.34.3",
     "skinview3d": "^3.4.1",
     "sonner": "^2.0.6",
     "stoker": "^1.4.3",
