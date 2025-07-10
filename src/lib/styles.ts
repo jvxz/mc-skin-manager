@@ -10,7 +10,7 @@ const interactiveStyles = {
     default:
       'bg-primary/90 hover:bg-primary active:bg-primary/90 text-primary-foreground',
     destructive:
-      'hover:bg-destructive/90 bg-destructive/90 text-destructive-foreground hover:bg-destructive active:bg-destructive',
+      'hover:bg-destructive/90 bg-destructive/90 text-destructive hover:bg-destructive active:bg-destructive',
     ghost: 'hover:bg-muted/90 active:bg-muted',
     link: 'text-primary underline-offset-4 hover:underline',
     outline:
@@ -37,7 +37,7 @@ const popoverStyles = {
     interactiveStyles.base,
     interactiveStyles.variant.ghost,
     interactiveStyles.size.default,
-    "focus:bg-muted focus:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg:not([class*='size-'])]:size-4 data-[variant=destructive]:text-destructive-foreground data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive-foreground data-[variant=destructive]:*:[svg]:!text-destructive-foreground dark:data-[variant=destructive]:focus:bg-destructive/40 relative flex cursor-default items-center p-1 px-2 text-sm outline-hidden transition-all select-none focus-visible:ring-0 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+    "focus:bg-muted focus:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg:not([class*='size-'])]:size-4 data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:!text-destructive dark:data-[variant=destructive]:focus:bg-destructive/40 relative flex cursor-default items-center p-1 px-2 text-sm outline-hidden transition-all select-none focus-visible:ring-0 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   ],
 }
 
