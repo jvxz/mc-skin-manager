@@ -11,7 +11,10 @@ interface SkinBase {
 }
 
 interface SkinAsFile extends SkinBase {
-  file: File
+  /**
+   * base64 encoded skin data
+   */
+  skinData: string
   inputType: 'file'
 }
 

@@ -30,7 +30,7 @@ function SkinCard({ skin }: { skin: Skin }) {
           <div className="flex items-center gap-2">
             <Avatar className="size-[48px]" square>
               {skin.inputType === 'file' ? (
-                <AvatarImage src={URL.createObjectURL(skin.file)} />
+                <AvatarImage src={skin.skinData} />
               ) : (
                 <AvatarImage src={skin.skinUrl} />
               )}
@@ -88,7 +88,7 @@ function SkinCard({ skin }: { skin: Skin }) {
 function getSkinText(skin: Skin) {
   switch (skin.inputType) {
     case 'file':
-      return skin.file.name
+      return 'TODO'
 
     case 'url':
       return skin.skinUrl

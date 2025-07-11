@@ -71,14 +71,17 @@ export async function getSkinFromInput({ type, input }: Params): Promise<Skin> {
       }
     }
     case 'file': {
+      const buffer = Buffer.from(await (input as File).arrayBuffer())
+      const base64 = buffer.toString('base64')
+
       const skinType = await getSkinType({
-        url: URL.createObjectURL(input as File),
+        base64,
       })
 
       return {
-        file: input as File,
         id: crypto.randomUUID(),
         inputType: 'file',
+        skinData: base64,
         skinType,
       }
     }

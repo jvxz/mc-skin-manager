@@ -52,6 +52,8 @@ function SkinViewer() {
     viewer.camera.position.set(-25, 20, 48)
   }, [])
 
+  if (!skin) return null
+
   return (
     <ReactSkinview3d
       capeUrl={'/test-cape.png'}
@@ -63,11 +65,7 @@ function SkinViewer() {
       width={500}
       onReady={handleReady}
       height={700}
-      skinUrl={
-        skin?.inputType === 'file'
-          ? URL.createObjectURL(skin.file)
-          : skin?.skinUrl || '/test-slim.png'
-      }
+      skinUrl={skin?.inputType === 'file' ? skin.skinData : skin?.skinUrl}
     />
   )
 }
