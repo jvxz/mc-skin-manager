@@ -4,8 +4,15 @@ import pino from 'pino'
 import pretty from 'pino-pretty'
 import { notFound, onError } from 'stoker/middlewares'
 import { defaultHook } from 'stoker/openapi'
+import type { auth } from '../auth'
 
-type AppBindings = { Variables: { logger: PinoLogger } }
+type AppBindings = {
+  Variables: {
+    logger: PinoLogger
+    user: typeof auth.$Infer.Session.user | null
+    session: typeof auth.$Infer.Session.session | null
+  }
+}
 
 export function createHonoRouter() {
   return new OpenAPIHono<AppBindings>({

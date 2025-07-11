@@ -1,6 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
 import { getSkinFromInput } from '@/actions/get-skin-from-input'
-import { postSkinToDb } from '@/actions/post-skin-to-db'
 import { getSkinInputType } from '@/lib/utils'
 import { useSkinList } from '@/store/skins'
 import { useActiveSkin } from './active-skin'
@@ -16,8 +15,6 @@ function useSkinImport() {
         input,
         type,
       })
-
-      await postSkinToDb(skin)
 
       return skin
     },
