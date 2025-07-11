@@ -73,3 +73,11 @@ export const verification = pgTable('verification', {
   ),
   value: text('value').notNull(),
 })
+
+export const schema = {
+  account,
+  session,
+  skin,
+  user,
+  verification,
+}
