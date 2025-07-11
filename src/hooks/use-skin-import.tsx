@@ -5,10 +5,10 @@ import { getSkinInputType } from '@/lib/utils'
 import { useSkinList } from '@/store/skins'
 import { useActiveSkin } from './active-skin'
 
-function useSkinUpload() {
+function useSkinImport() {
   const { addSkin } = useSkinList()
   const { setSkin } = useActiveSkin()
-  const { mutate: uploadSkin } = useMutation({
+  const { mutate: importSkin } = useMutation({
     mutationFn: async (input: string | File) => {
       const type = getSkinInputType(input)
 
@@ -27,7 +27,7 @@ function useSkinUpload() {
     },
   })
 
-  return { uploadSkin }
+  return { importSkin }
 }
 
-export { useSkinUpload }
+export { useSkinImport }
