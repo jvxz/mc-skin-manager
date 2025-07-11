@@ -5,7 +5,7 @@ import ReactSkinview3d, {
 } from 'react-skinview3d'
 import { PlayerAnimation, type PlayerObject } from 'skinview3d'
 import { DirectionalLight } from 'three'
-import { useActiveSkin } from '@/hooks/active-skin'
+import { useActiveSkin } from '@/store/active-skin'
 
 class MyAnimation extends PlayerAnimation {
   animate(player: PlayerObject) {

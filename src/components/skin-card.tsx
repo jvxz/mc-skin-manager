@@ -13,8 +13,8 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger,
 } from '@/components/ui/context-menu'
-import { useActiveSkin } from '@/hooks/active-skin'
 import type { Skin } from '@/lib/types'
+import { useActiveSkin } from '@/store/active-skin'
 
 function SkinCard({ skin }: { skin: Skin }) {
   const { setSkin } = useActiveSkin()

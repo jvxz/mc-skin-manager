@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { getSkinFromInput } from '@/actions/get-skin-from-input'
 import { getSkinInputType } from '@/lib/utils'
 import { useSkinList } from '@/store/skins'
-import { useActiveSkin } from './active-skin'
+import { useActiveSkin } from '../store/active-skin'
 
 function useSkinImport() {
   const { addSkin } = useSkinList()
