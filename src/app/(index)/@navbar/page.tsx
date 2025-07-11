@@ -1,5 +1,8 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { SignInButton } from '@/components/auth/sign-in'
+import { SignOutButton } from '@/components/auth/sign-out-button'
+import { Button } from '@/components/ui/button'
 import {
   CommandDialog,
   CommandEmpty,
@@ -10,6 +13,7 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from '@/components/ui/command'
+import { useSession } from '@/lib/auth/client'
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
@@ -59,6 +63,26 @@ export default function Navbar() {
           </CommandGroup>
         </CommandList>
       </CommandDialog>
+      <div className="flex-1" />
+      <Auth />
     </nav>
   )
+}
+
+function Auth() {
+  const { data, isPending } = useSession()
+
+  if (isPending) {
+    return (
+      <Button size="sm" isLoading>
+        Sign in
+      </Button>
+    )
+  }
+
+  if (data?.session) {
+    return <SignOutButton />
+  }
+
+  return <SignInButton />
 }

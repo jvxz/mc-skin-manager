@@ -1,31 +1,24 @@
 'use client'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { notFound } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { authClient } from '@/lib/auth/client'
+import { signIn, signOut, useSession } from '@/lib/auth/client'
 
 export default function Page() {
   const qc = useQueryClient()
-  const { data: session } = useQuery({
-    queryFn: () => authClient.getSession(),
-    queryKey: ['session'],
-  })
-
+  const { data: session } = useSession()
   if (process.env.NODE_ENV !== 'development') return notFound()
 
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-4">
-      {session?.data?.session.token && (
-        <Button
-          onClick={() =>
-            authClient.signOut().then(() => qc.invalidateQueries())
-          }>
+      {session?.session.token && (
+        <Button onClick={() => signOut().then(() => qc.invalidateQueries())}>
           Log out
         </Button>
       )}
       <Button
         onClick={() => {
-          authClient.signIn.social({
+          signIn.social({
             provider: 'github',
           })
         }}>
@@ -33,7 +26,7 @@ export default function Page() {
       </Button>
       <Button
         onClick={() => {
-          authClient.signIn.social({
+          signIn.social({
             provider: 'discord',
           })
         }}>
