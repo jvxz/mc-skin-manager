@@ -65,7 +65,7 @@ function SkinViewer() {
       width={500}
       onReady={handleReady}
       height={700}
-      skinUrl={skin?.inputType === 'file' ? skin.skinData : skin?.skinUrl}
+      skinUrl={`data:image/png;base64,${skin.base64}`}
     />
   )
 }

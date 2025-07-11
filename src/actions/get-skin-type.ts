@@ -1,28 +1,11 @@
 'use server'
 import sharp from 'sharp'
 
-type ParamsAsUrl = {
-  url: string
-}
-
-type ParamsAsBase64 = {
+type Params = {
   base64: string
 }
 
-type Params = ParamsAsUrl | ParamsAsBase64
-
-export async function getSkinType(params: Params) {
-  if ('url' in params) {
-    const { url } = params
-
-    const res = await fetch(url)
-    const arrayBuffer = await res.arrayBuffer()
-
-    return await checkSkin(arrayBuffer)
-  }
-
-  const { base64 } = params
-
+export async function getSkinType({ base64 }: Params) {
   const { buffer } = Buffer.from(base64, 'base64')
 
   return await checkSkin(buffer)

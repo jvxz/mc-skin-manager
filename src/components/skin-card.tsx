@@ -29,11 +29,7 @@ function SkinCard({ skin }: { skin: Skin }) {
         <Card onClick={handleClick} className="hover:border-primary">
           <div className="flex items-center gap-2">
             <Avatar className="size-[48px]" square>
-              {skin.inputType === 'file' ? (
-                <AvatarImage src={skin.skinData} />
-              ) : (
-                <AvatarImage src={skin.skinUrl} />
-              )}
+              <AvatarImage src={`data:image/png;base64,${skin.base64}`} />
               <AvatarFallback className="animate-pulse bg-muted"></AvatarFallback>
             </Avatar>
             <CardHeader>
@@ -56,10 +52,10 @@ function SkinCard({ skin }: { skin: Skin }) {
         {skin.inputType === 'username' || skin.inputType === 'uuid' ? (
           <>
             <ContextMenuSeparator />
-            <ContextMenuItem
+            {/* <ContextMenuItem
               onClick={() => navigator.clipboard.writeText(skin.skinUrl)}>
               Copy URL
-            </ContextMenuItem>
+            </ContextMenuItem> */}
             <ContextMenuItem
               onClick={() => navigator.clipboard.writeText(skin.username)}>
               Copy Username
@@ -91,7 +87,7 @@ function getSkinText(skin: Skin) {
       return 'TODO'
 
     case 'url':
-      return skin.skinUrl
+      return 'TODO'
 
     case 'username':
       return `${skin.username}'s skin`

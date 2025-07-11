@@ -8,30 +8,24 @@ interface SkinBase {
   id: string
   inputType: SkinInputType
   skinType: SkinType
+  base64: string
 }
 
 interface SkinAsFile extends SkinBase {
-  /**
-   * base64 encoded skin data
-   */
-  skinData: string
   inputType: 'file'
 }
 
 interface SkinAsUrl extends SkinBase {
-  skinUrl: string
   inputType: 'url'
 }
 
 interface SkinAsUsername extends SkinBase {
-  skinUrl: string
   inputType: 'username'
   username: string
   uuid: string
 }
 
 interface SkinAsUuid extends SkinBase {
-  skinUrl: string
   inputType: 'uuid'
   uuid: string
   username: string
