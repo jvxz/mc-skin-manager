@@ -52,15 +52,30 @@ function SkinCard({ skin }: { skin: Skin }) {
         <ContextMenuItem>Apply</ContextMenuItem>
         <ContextMenuItem>Rename</ContextMenuItem>
         <ContextMenuItem variant="destructive">Delete</ContextMenuItem>
-        <ContextMenuSeparator />
-        <ContextMenuItem>Copy URL</ContextMenuItem>
 
         {skin.inputType === 'username' || skin.inputType === 'uuid' ? (
           <>
-            <ContextMenuItem>Copy Username</ContextMenuItem>
-            <ContextMenuItem>Copy UUID</ContextMenuItem>
             <ContextMenuSeparator />
-            <ContextMenuItem>
+            <ContextMenuItem
+              onClick={() => navigator.clipboard.writeText(skin.skinUrl)}>
+              Copy URL
+            </ContextMenuItem>
+            <ContextMenuItem
+              onClick={() => navigator.clipboard.writeText(skin.username)}>
+              Copy Username
+            </ContextMenuItem>
+            <ContextMenuItem
+              onClick={() => navigator.clipboard.writeText(skin.uuid)}>
+              Copy UUID
+            </ContextMenuItem>
+            <ContextMenuSeparator />
+            <ContextMenuItem
+              onClick={() =>
+                window.open(
+                  `https://namemc.com/profile/${skin.username}`,
+                  '_blank',
+                )
+              }>
               Open in NameMC <IconExternalLink />
             </ContextMenuItem>
           </>
