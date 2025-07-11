@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { getSkinFromInput } from '@/actions/get-skin-from-input'
+import { postSkinToDb } from '@/actions/post-skin-to-db'
 import { getSkinInputType } from '@/lib/utils'
 import { useSkinList } from '@/store/skins'
 import { useActiveSkin } from './active-skin'
@@ -11,12 +12,12 @@ function useSkinUpload() {
     mutationFn: async (input: string | File) => {
       const type = getSkinInputType(input)
 
-      const params = {
+      const skin = await getSkinFromInput({
         input,
         type,
-      }
+      })
 
-      const skin = await getSkinFromInput(params)
+      await postSkinToDb(skin)
 
       return skin
     },
