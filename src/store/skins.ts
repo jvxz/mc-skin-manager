@@ -16,7 +16,7 @@ const initialState: State = {
   skins: [],
 }
 
-const useSkinList = create<State & Actions>(set => ({
+const useLocalSkinList = create<State & Actions>(set => ({
   ...initialState,
   addSkin: skin => set(state => ({ skins: [...state.skins, skin] })),
   removeSkin: id =>
@@ -25,4 +25,4 @@ const useSkinList = create<State & Actions>(set => ({
   updateSkin: (id, skin) =>
     set(state => ({ skins: state.skins.map(s => (s.id === id ? skin : s)) })),
 }))
-export { useSkinList }
+export { useLocalSkinList }

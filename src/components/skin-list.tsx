@@ -1,10 +1,10 @@
 'use client'
 import { Virtuoso } from 'react-virtuoso'
-import { useSkinList } from '@/store/skins'
+import { useLocalSkinList } from '@/store/skins'
 import { SkinCard } from './skin-card'
 
 function SkinList() {
-  const { skins } = useSkinList()
+  const { skins } = useLocalSkinList()
 
   if (skins.length === 0) {
     return <EmptyState />

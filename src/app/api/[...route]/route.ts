@@ -2,7 +2,7 @@ import { Scalar } from '@scalar/hono-api-reference'
 import { handle } from 'hono/vercel'
 import { createHonoApp } from '@/lib/hono'
 import { createOpenApi } from '@/lib/hono/open-api'
-import { authRoute } from '@/lib/hono/routes/auth'
+import { uploadRoute } from '@/lib/hono/routes/upload/route'
 
 export const dynamic = 'force-dynamic'
 
@@ -21,7 +21,7 @@ app.get(
   }),
 )
 
-const routes = app.route('/auth', authRoute)
+const routes = app.route('/upload', uploadRoute)
 
 export const GET = handle(app)
 export const POST = handle(app)

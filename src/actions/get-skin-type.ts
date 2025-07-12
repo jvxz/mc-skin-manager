@@ -6,7 +6,7 @@ type Params = {
 }
 
 export async function getSkinType({ base64 }: Params) {
-  const { buffer } = Buffer.from(base64, 'base64')
+  const { buffer } = Buffer.from(`${base64}`, 'base64')
 
   return await checkSkin(buffer)
 }
