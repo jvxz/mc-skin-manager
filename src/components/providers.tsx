@@ -1,6 +1,7 @@
 'use client'
 import dynamic from 'next/dynamic'
 import type { ThemeProviderProps } from 'next-themes'
+import { NuqsAdapter } from 'nuqs/adapters/next'
 import { TRPCReactProvider } from '@/lib/trpc/client'
 import { Toaster } from './ui/sonner'
 
@@ -21,7 +22,7 @@ function Providers({ children, ...props }: ThemeProviderProps) {
         defaultTheme="system"
         enableSystem
         {...props}>
-        {children}
+        <NuqsAdapter>{children}</NuqsAdapter>
         <Toaster />
       </NextThemesProvider>
     </TRPCReactProvider>

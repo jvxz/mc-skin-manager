@@ -22,7 +22,7 @@ export default function RootLayout({
           />
         </head>
       )}
-      <body className="antialiased">
+      <body className="h-screen antialiased">
         <Providers>{children}</Providers>
       </body>
     </html>
