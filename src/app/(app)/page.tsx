@@ -1,9 +1,15 @@
-import { Button } from '@/components/ui/button'
+import { SkinList } from '@/components/skin/list'
+import { SkinViewer } from '@/components/skin/viewer'
 
 export default function Page() {
   return (
-    <div className="grid size-full place-items-center">
-      <Button>Button</Button>
+    <div className="flex size-full *:p-2">
+      <div className="w-[400px] border-r">
+        <SkinList />
+      </div>
+      <div className="flex-1 ">
+        <SkinViewer />
+      </div>
     </div>
   )
 }
