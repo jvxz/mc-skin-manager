@@ -1,14 +1,8 @@
-import { publicProcedure, router } from './index'
+import { router } from './index'
+import { userRouter } from './routers/user'
 
 export const appRouter = router({
-  hello: publicProcedure.query(
-    () =>
-      new Promise<string>(resolve => {
-        setTimeout(() => {
-          resolve('data from trpc!')
-        }, 5000)
-      }),
-  ),
+  user: userRouter,
 })
 
 export type AppRouter = typeof appRouter
