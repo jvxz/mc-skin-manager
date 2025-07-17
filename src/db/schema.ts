@@ -60,4 +60,20 @@ export const verification = pgTable('verification', {
   value: text('value').notNull(),
 })
 
-export const schema = { account, session, user, verification }
+export const skins = pgTable('skins', {
+  base64: text('base64').notNull(),
+  createdAt: timestamp('created_at')
+    .$defaultFn(() => /* @__PURE__ */ new Date())
+    .notNull()
+    .$type<Date | string>(),
+  headBase64: text('head_base64').notNull(),
+  id: text('id').primaryKey().notNull(),
+  name: text('name').notNull(),
+  skinType: text('skin_type').notNull().$type<'slim' | 'classic'>(),
+  userId: text('user_id')
+    .notNull()
+    .references(() => user.id, { onDelete: 'cascade' }),
+  uuid: text('uuid'),
+})
+
+export const schema = { account, session, skins, user, verification }
