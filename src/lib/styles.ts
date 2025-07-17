@@ -13,8 +13,9 @@ const interactiveStyles = {
       'hover:bg-destructive/90 bg-destructive/90 text-destructive-foreground hover:bg-destructive active:bg-destructive',
     ghost: 'hover:bg-muted/90 active:bg-muted/80',
     link: 'text-primary underline-offset-4 hover:underline',
+    // shadow-[0px_-1px_0px_0px_hsl(from_var(--muted-foreground)_h_s_l/0.40),0px_1px_0px_0px_hsl(from_var(--muted)_h_s_l),inset_0px_-2px_0px_0px_hsl(from_var(--muted-foreground)_h_s_l/0.035)]
     outline:
-      'border-border/90 hover:bg-muted/90 active:bg-muted/80 hover:border-border active:border-border border bg-transparent',
+      'border-border/90 hover:bg-muted/90 active:bg-muted/80 hover:border-border active:border-border border shadow-[0px_-1px_0px_0px_hsl(from_var(--muted-foreground)_h_s_l/0.40),0px_1px_0px_0px_hsl(from_var(--muted)_h_s_l))] border-y-0 bg-transparent',
   },
 }
 
@@ -22,7 +23,7 @@ const staticStyles = {
   base: 'rounded p-5',
   variant: {
     default:
-      'bg-card shadow-[0px_-1px_0px_0px_hsl(from_var(--muted-foreground)_h_s_l/0.40),0px_1px_0px_0px_hsl(from_var(--muted)_h_s_l),inset_0px_-2px_0px_0px_hsl(from_var(--muted-foreground)_h_s_l/0.035)] border border-y-0 text-card-foreground',
+      'bg-card shadow-[0px_-1px_0px_0px_hsl(from_var(--muted-foreground)_h_s_l/0.40),0px_1px_0px_0px_hsl(from_var(--muted)_h_s_l))] border border-y-0 text-card-foreground',
     destructive:
       'bg-card border-destructive text-destructive border [&>svg]:text-current',
   },
