@@ -4,6 +4,7 @@
     "@t3-oss/env-nextjs": "^0.13.8",
     "@tanstack/react-form": "^1.14.1",
     "better-auth": "^1.2.12",
+    "dayjs": "^1.11.13",
     "drizzle-orm": "^0.44.3",
     "next": "15.4.1",
     "nuqs": "^2.4.3",
