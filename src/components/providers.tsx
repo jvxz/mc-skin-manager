@@ -1,4 +1,5 @@
 'use client'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import dynamic from 'next/dynamic'
 import type { ThemeProviderProps } from 'next-themes'
 import { NuqsAdapter } from 'nuqs/adapters/next'
@@ -25,6 +26,7 @@ function Providers({ children, ...props }: ThemeProviderProps) {
         <NuqsAdapter>{children}</NuqsAdapter>
         <Toaster />
       </NextThemesProvider>
+      <ReactQueryDevtools />
     </TRPCReactProvider>
   )
 }
