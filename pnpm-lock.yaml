@@ -26,6 +26,9 @@ importers:
       drizzle-orm:
         specifier: ^0.44.3
         version: 0.44.3(@neondatabase/serverless@1.0.1)(@types/pg@8.15.4)(kysely@0.28.2)
+      jotai:
+        specifier: ^2.12.5
+        version: 2.12.5(@types/react@19.1.8)(react@19.1.0)
       next:
         specifier: 15.4.1
         version: 15.4.1(babel-plugin-react-compiler@19.1.0-rc.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -2068,6 +2071,18 @@ packages:
 
   jose@6.0.12:
     resolution: {integrity: sha512-T8xypXs8CpmiIi78k0E+Lk7T2zlK4zDyg+o1CZ4AkOHgDg98ogdP2BeZ61lTFKFyoEwJ9RgAgN+SdM3iPgNonQ==}
+
+  jotai@2.12.5:
+    resolution: {integrity: sha512-G8m32HW3lSmcz/4mbqx0hgJIQ0ekndKWiYP7kWVKi0p6saLXdSoye+FZiOFyonnd7Q482LCzm8sMDl7Ar1NWDw==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      '@types/react': '>=17.0.0'
+      react: '>=17.0.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      react:
+        optional: true
 
   jsonc-parser@3.3.1:
     resolution: {integrity: sha512-HUgH65KyejrUFPvHFPbqOY0rsFip3Bo5wb4ngvdi1EpCYWUQDC5V+Y7mZws+DLkr4M//zQJoanu1SP+87Dv1oQ==}
@@ -4274,6 +4289,11 @@ snapshots:
   jiti@2.4.2: {}
 
   jose@6.0.12: {}
+
+  jotai@2.12.5(@types/react@19.1.8)(react@19.1.0):
+    optionalDependencies:
+      '@types/react': 19.1.8
+      react: 19.1.0
 
   jsonc-parser@3.3.1: {}
 

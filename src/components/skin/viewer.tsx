@@ -1,10 +1,18 @@
 'use client'
-import { useCallback } from 'react'
+import { atom, useAtomValue } from 'jotai'
+import { useCallback, useMemo } from 'react'
 import ReactSkinview3d, {
   type ViewerReadyCallbackOptions,
 } from 'react-skinview3d'
-import { PlayerAnimation, type PlayerObject } from 'skinview3d'
+import {
+  PlayerAnimation,
+  type PlayerObject,
+  type SkinViewerOptions,
+} from 'skinview3d'
 import { DirectionalLight } from 'three'
+import type { Skin } from '@/db/schema'
+
+export const currentSkinAtom = atom<Skin | null>(null)
 
 class WalkAnimation extends PlayerAnimation {
   animate(player: PlayerObject) {
@@ -22,6 +30,16 @@ class WalkAnimation extends PlayerAnimation {
 }
 
 function SkinViewer() {
+  const skin = useAtomValue(currentSkinAtom)
+
+  const model = useMemo((): SkinViewerOptions['model'] => {
+    if (!skin) return undefined
+
+    if (skin.skinType === 'SLIM') return 'slim'
+
+    return 'default'
+  }, [skin])
+
   const handleReady = useCallback(({ viewer }: ViewerReadyCallbackOptions) => {
     viewer.controls.enableZoom = false
 
@@ -49,18 +67,19 @@ function SkinViewer() {
     viewer.camera.position.set(-25, 20, 48)
   }, [])
 
+  if (!skin) return null
+
   return (
     <ReactSkinview3d
-      capeUrl={'/test-cape.png'}
       options={{
         animation: new WalkAnimation(),
         fov: 35,
-        model: 'auto-detect',
+        model,
       }}
       width={500}
       onReady={handleReady}
       height={700}
-      skinUrl={'/assets/steve.png'}
+      skinUrl={skin.base64}
     />
   )
 }

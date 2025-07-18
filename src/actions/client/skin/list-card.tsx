@@ -1,7 +1,9 @@
 import { IconBoxModel, IconCursorText, IconTrash } from '@tabler/icons-react'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { useSetAtom } from 'jotai'
 import Image from 'next/image'
+import { currentSkinAtom } from '@/components/skin/viewer'
 import { buttonVariants } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import {
@@ -24,10 +26,13 @@ import { cn } from '@/lib/utils'
 dayjs.extend(relativeTime)
 
 function SkinListCard({ skin }: { skin: Skin }) {
+  const setSkin = useSetAtom(currentSkinAtom)
+
   return (
     <ContextMenu>
       <ContextMenuTrigger asChild>
         <Card
+          onClick={() => setSkin(skin)}
           className={cn(
             buttonVariants({ variant: 'outline' }),
             staticStyles.variant.default,
@@ -68,7 +73,7 @@ function SkinListCard({ skin }: { skin: Skin }) {
         </Card>
       </ContextMenuTrigger>
       <ContextMenuContent>
-        <ContextMenuItem>
+        <ContextMenuItem onClick={() => setSkin(skin)}>
           <IconBoxModel />
           Apply
         </ContextMenuItem>
