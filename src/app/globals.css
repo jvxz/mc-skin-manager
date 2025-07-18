@@ -100,7 +100,7 @@
   --border: hsl(223.8136 0.0001% 89.5577%);
   --input: hsl(223.8136 0.0001% 92.1478%);
   --ring: hsl(0 0% 0%);
-  --radius: 0.75rem;
+  --radius: 0.5rem;
 
   --expanded: 32rem;
   --not-expanded: 5.5rem;
