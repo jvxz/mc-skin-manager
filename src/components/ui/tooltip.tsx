@@ -34,7 +34,7 @@ function TooltipTrigger({
 
 function TooltipContent({
   className,
-  sideOffset = 4,
+  sideOffset = 6,
   children,
   ...props
 }: ComponentProps<typeof TooltipPrimitive.Content>) {
