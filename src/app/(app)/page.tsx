@@ -7,7 +7,7 @@ export default function Page() {
       <div className="w-[400px] border-r">
         <SkinList />
       </div>
-      <div className="flex-1 ">
+      <div className="flex flex-1 items-center justify-center">
         <SkinViewer />
       </div>
     </div>
