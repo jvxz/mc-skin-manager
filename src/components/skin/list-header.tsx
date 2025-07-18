@@ -36,6 +36,7 @@ function SkinListHeader() {
           <form.Field name="text">
             {field => (
               <Input
+                data-1p-ignore
                 className="peer ps-9"
                 placeholder="Username, URL, or UUID"
                 type="text"
