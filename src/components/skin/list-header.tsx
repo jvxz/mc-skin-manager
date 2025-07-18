@@ -6,7 +6,7 @@ import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 
 function SkinListHeader() {
-  const { postSkin } = useSkin()
+  const { postSkin, isMutating } = useSkin()
   const form = useForm({
     defaultValues: {
       file: null as File | null,
@@ -29,6 +29,7 @@ function SkinListHeader() {
     <form
       onSubmit={e => {
         e.preventDefault()
+        if (isMutating) return
         form.handleSubmit()
       }}>
       <div className="flex items-center gap-2">
@@ -36,6 +37,7 @@ function SkinListHeader() {
           <form.Field name="text">
             {field => (
               <Input
+                disabled={isMutating}
                 data-1p-ignore
                 className="peer ps-9"
                 placeholder="Username, URL, or UUID"
@@ -49,11 +51,17 @@ function SkinListHeader() {
             <IconShirt size={16} aria-hidden="true" />
           </div>
         </div>
-        <Button asChild size="icon" variant="outline" className="size-8">
+        <Button
+          disabled={isMutating}
+          asChild
+          size="icon"
+          variant="outline"
+          className="size-8">
           <label htmlFor="file">
             <form.Field name="file">
               {f => (
                 <input
+                  disabled={isMutating}
                   type="file"
                   id="file"
                   className="hidden"
@@ -70,7 +78,7 @@ function SkinListHeader() {
             <IconFileImport />
           </label>
         </Button>
-        <Button>Import</Button>
+        <Button isLoading={isMutating}>Import</Button>
       </div>
     </form>
   )
