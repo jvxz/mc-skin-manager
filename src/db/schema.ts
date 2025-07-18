@@ -69,11 +69,13 @@ export const skins = pgTable('skins', {
   headBase64: text('head_base64').notNull(),
   id: text('id').primaryKey().notNull(),
   name: text('name').notNull(),
-  skinType: text('skin_type').notNull().$type<'slim' | 'classic'>(),
+  skinType: text('skin_type').notNull().$type<'SLIM' | 'CLASSIC'>(),
   userId: text('user_id')
     .notNull()
     .references(() => user.id, { onDelete: 'cascade' }),
   uuid: text('uuid'),
 })
+
+export type Skin = typeof skins.$inferSelect
 
 export const schema = { account, session, skins, user, verification }
