@@ -2,6 +2,7 @@
   "dependencies": {
     "@neondatabase/serverless": "^1.0.1",
     "@t3-oss/env-nextjs": "^0.13.8",
+    "@tanstack/react-form": "^1.14.1",
     "better-auth": "^1.2.12",
     "drizzle-orm": "^0.44.3",
     "next": "15.4.1",

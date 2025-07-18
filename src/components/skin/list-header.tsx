@@ -1,0 +1,68 @@
+'use client'
+import { IconFileImport, IconShirt } from '@tabler/icons-react'
+import { useForm } from '@tanstack/react-form'
+import { Button } from '../ui/button'
+import { Input } from '../ui/input'
+
+function SkinListHeader() {
+  const form = useForm({
+    defaultValues: {
+      file: null as File | null,
+      text: '',
+    },
+    onSubmit: values => {
+      console.log(values)
+    },
+  })
+
+  return (
+    <form
+      onSubmit={e => {
+        e.preventDefault()
+        form.handleSubmit()
+      }}>
+      <div className="flex items-center gap-2">
+        <div className="relative flex-1">
+          <form.Field name="text">
+            {field => (
+              <Input
+                className="peer ps-9"
+                placeholder="Username, URL, or UUID"
+                type="text"
+                onChange={e => field.handleChange(e.target.value)}
+                value={field.state.value}
+              />
+            )}
+          </form.Field>
+          <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
+            <IconShirt size={16} aria-hidden="true" />
+          </div>
+        </div>
+        <Button asChild size="icon" variant="outline" className="size-8">
+          <label htmlFor="file">
+            <form.Field name="file">
+              {f => (
+                <input
+                  type="file"
+                  id="file"
+                  className="hidden"
+                  onChange={e => {
+                    const file = e.target.files?.[0]
+                    if (!file) return
+
+                    f.handleChange(file)
+                    form.handleSubmit()
+                  }}
+                />
+              )}
+            </form.Field>
+            <IconFileImport />
+          </label>
+        </Button>
+        <Button>Import</Button>
+      </div>
+    </form>
+  )
+}
+
+export { SkinListHeader }
