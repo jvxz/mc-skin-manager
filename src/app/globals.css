@@ -122,7 +122,7 @@
   --accent: hsl(223.8136 0% 19.8916%);
   --accent-foreground: hsl(223.8136 -172.5242% 100%);
   --destructive: hsl(359.9132 100.2494% 67.8807%);
-  --destructive-foreground: hsl(0 0% 0%);
+  --destructive-foreground: hsl(0 0% 98%);
   --border: hsl(223.8136 0% 14.0871%);
   --input: hsl(223.8136 0% 19.8916%);
   --ring: hsl(223.8136 0% 64.471%);
