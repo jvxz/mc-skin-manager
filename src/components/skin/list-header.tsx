@@ -1,17 +1,27 @@
 'use client'
 import { IconFileImport, IconShirt } from '@tabler/icons-react'
 import { useForm } from '@tanstack/react-form'
+import { useSkin } from '@/hooks/use-skin'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 
 function SkinListHeader() {
+  const { postSkin } = useSkin()
   const form = useForm({
     defaultValues: {
       file: null as File | null,
       text: '',
     },
-    onSubmit: values => {
-      console.log(values)
+    onSubmit: ({ value }) => {
+      if (value.file) {
+        postSkin(value.file)
+        return form.reset()
+      }
+
+      if (value.text) {
+        postSkin(value.text)
+        return form.reset()
+      }
     },
   })
 
