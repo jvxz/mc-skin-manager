@@ -20,12 +20,14 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import type { Skin } from '@/db/schema'
+import { useSkin } from '@/hooks/use-skin'
 import { staticStyles } from '@/lib/styles'
 import { cn } from '@/lib/utils'
 
 dayjs.extend(relativeTime)
 
 function SkinListCard({ skin }: { skin: Skin }) {
+  const { deleteSkin } = useSkin()
   const setSkin = useSetAtom(currentSkinAtom)
 
   if (skin.id === 'pending')
@@ -92,7 +94,7 @@ function SkinListCard({ skin }: { skin: Skin }) {
           <IconCursorText />
           Rename
         </ContextMenuItem>
-        <ContextMenuItem variant="destructive">
+        <ContextMenuItem variant="destructive" onClick={() => deleteSkin(skin)}>
           <IconTrash />
           Delete
         </ContextMenuItem>
