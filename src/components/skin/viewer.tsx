@@ -67,19 +67,19 @@ function SkinViewer() {
     viewer.camera.position.set(-25, 20, 48)
   }, [])
 
-  if (!skin) return null
-
   return (
     <ReactSkinview3d
+      data-active={!!skin}
       options={{
         animation: new WalkAnimation(),
         fov: 35,
         model,
       }}
+      className="data-[active=false]:hidden"
       width={500}
       onReady={handleReady}
       height={700}
-      skinUrl={skin.base64}
+      skinUrl={skin?.base64 ?? ''}
     />
   )
 }
