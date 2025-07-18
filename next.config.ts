@@ -6,7 +6,15 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   experimental: {
+    devtoolNewPanelUI: true,
     reactCompiler: true,
+  },
+  logging: {
+    fetches: {
+      fullUrl: true,
+      hmrRefreshes: false,
+    },
+    incomingRequests: true,
   },
   typescript: {
     ignoreBuildErrors: true,
