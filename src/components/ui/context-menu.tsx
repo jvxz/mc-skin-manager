@@ -115,7 +115,11 @@ function ContextMenuItem({
       data-slot="context-menu-item"
       data-inset={inset}
       data-variant={variant}
-      className={cn(popoverStyles.item, className)}
+      className={cn(
+        popoverStyles.item,
+        '[&_svg]:!text-foreground has-[svg]:px-1.5',
+        className,
+      )}
       {...props}
     />
   )
