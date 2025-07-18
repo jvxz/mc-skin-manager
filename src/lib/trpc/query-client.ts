@@ -10,13 +10,15 @@ export function makeQueryClient() {
           query.state.status === 'pending',
       },
       mutations: {
-        onError: error => {
-          toast.error(error.message)
-        },
+        onError: handleQueryError,
       },
       queries: {
         staleTime: 30 * 1000,
       },
     },
   })
+}
+
+export function handleQueryError(error: Error) {
+  toast.error(error.message)
 }

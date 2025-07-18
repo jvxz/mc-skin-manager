@@ -8,6 +8,7 @@ import { getSkinData } from '@/actions/client/skin/get-skin-data'
 import { getSkins } from '@/actions/server/user/get-skins'
 import { postSkin as postSkinAction } from '@/actions/server/user/post-skin'
 import type { Skin } from '@/db/schema'
+import { handleQueryError } from '@/lib/trpc/query-client'
 
 const POST_SKIN_KEY = 'post-skin'
 const GET_SKINS_KEY = 'user-skins'
@@ -27,9 +28,9 @@ function useSkin() {
       return postSkinAction(skin)
     },
     mutationKey: [POST_SKIN_KEY],
-    onError: (_error, _variables, context) => {
-      // @ts-expect-error - context is not typed
-      qc.setQueryData([GET_SKINS_KEY], context.previousSkins)
+    onError: (err, _, context) => {
+      qc.setQueryData([GET_SKINS_KEY], context?.previousSkins)
+      handleQueryError(err)
     },
     onMutate: async () => {
       await qc.cancelQueries({ queryKey: [GET_SKINS_KEY] })
