@@ -28,8 +28,10 @@ function useSkin() {
   const { mutate: postSkin, isPending: isPosting } = useMutation({
     mutationFn: async (input: File | string) => {
       const skin = await getSkinData(input)
+
       removePendingSkin(qc)
-      addSkinOptimistically(skin, qc)
+      addSkinOptimistically(skin, qc, setCurrentSkin)
+
       return postSkinAction(skin)
     },
     mutationKey: [POST_SKIN_KEY],
@@ -70,6 +72,7 @@ function useSkin() {
 
       removeSkinOptimistically(skin, qc)
 
+      // context for onError
       return { previousSkins }
     },
     onSettled: () => refetchSkins(),
@@ -112,13 +115,17 @@ function removePendingSkin(qc: QueryClient) {
   )
 }
 
-function addSkinOptimistically(skin: Omit<Skin, 'userId'>, qc: QueryClient) {
-  const previousSkins = qc.getQueryData<Skin[]>([GET_SKINS_KEY]) ?? []
+function addSkinOptimistically(
+  skinInput: Omit<Skin, 'userId'>,
+  qc: QueryClient,
+  setCurrentSkin?: (skin: Skin) => void,
+) {
+  const skin: Skin = { ...skinInput, userId: '' }
 
-  qc.setQueryData<Skin[]>([GET_SKINS_KEY], () => [
-    ...previousSkins,
-    { ...skin, userId: '' },
-  ])
+  setCurrentSkin?.(skin)
+
+  const previousSkins = qc.getQueryData<Skin[]>([GET_SKINS_KEY]) ?? []
+  qc.setQueryData<Skin[]>([GET_SKINS_KEY], () => [...previousSkins, skin])
 }
 
 function removeSkinOptimistically(skin: Skin, qc: QueryClient) {
