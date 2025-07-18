@@ -28,6 +28,17 @@ dayjs.extend(relativeTime)
 function SkinListCard({ skin }: { skin: Skin }) {
   const setSkin = useSetAtom(currentSkinAtom)
 
+  if (skin.id === 'pending')
+    return (
+      <Card
+        className={cn(
+          buttonVariants({ variant: 'outline' }),
+          staticStyles.variant.default,
+          'pointer-events-none flex h-18 animate-pulse flex-row items-center justify-start gap-3 p-3',
+        )}
+      />
+    )
+
   return (
     <ContextMenu>
       <ContextMenuTrigger asChild>
