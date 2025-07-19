@@ -1,17 +1,14 @@
-import {
-  type QueryClient,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useAtom } from 'jotai'
 import { getSkinData } from '@/actions/client/skin/get-skin-data'
-import { deleteSkin as deleteSkinAction } from '@/actions/server/user/delete-skin'
-import { getSkins } from '@/actions/server/user/get-skins'
-import { postSkin as postSkinAction } from '@/actions/server/user/post-skin'
+import { deleteUserSkin as deleteSkinAction } from '@/actions/server/user/delete-skin'
+import { getUserSkins } from '@/actions/server/user/get-skins'
+import { postUserSkin as postSkinAction } from '@/actions/server/user/post-skin'
+import { useSession } from '@/auth/client'
 import { currentSkinAtom } from '@/components/skin/viewer'
 import type { Skin } from '@/db/schema'
 import { handleQueryError } from '@/lib/trpc/query-client'
+import { localSkinsAtom } from '@/stores/local-skins'
 
 const POST_SKIN_KEY = 'post-skin'
 const GET_SKINS_KEY = 'user-skins'
@@ -19,9 +16,13 @@ const DELETE_SKIN_KEY = 'delete-skin'
 
 function useSkin() {
   const qc = useQueryClient()
+  const { data: sessionData, isPending: isLoadingSession } = useSession()
+
   const [currentSkin, setCurrentSkin] = useAtom(currentSkinAtom)
-  const { data: skins, refetch: refetchSkins } = useQuery({
-    queryFn: () => getSkins(),
+  const [localSkins, setLocalSkins] = useAtom(localSkinsAtom)
+
+  const { data: userSkins, refetch: refetchSkins } = useQuery({
+    queryFn: () => getUserSkins(),
     queryKey: [GET_SKINS_KEY],
   })
 
@@ -29,14 +30,25 @@ function useSkin() {
     mutationFn: async (input: File | string) => {
       const skin = await getSkinData(input)
 
-      removePendingSkin(qc)
-      addSkinOptimistically(skin, qc, setCurrentSkin)
+      removePendingSkin()
+
+      if (!sessionData?.user) {
+        return setLocalSkins(prev => [
+          ...prev,
+          {
+            ...skin,
+            userId: 'local',
+          },
+        ])
+      }
+
+      addSkinOptimistically(skin)
 
       return postSkinAction(skin)
     },
     mutationKey: [POST_SKIN_KEY],
-    onError: (err, _, context) => {
-      qc.setQueryData([GET_SKINS_KEY], context?.previousSkins)
+    onError: err => {
+      removePendingSkin()
       handleQueryError(err)
     },
     onMutate: async () => {
@@ -44,7 +56,7 @@ function useSkin() {
 
       const previousSkins = qc.getQueryData<Skin[]>([GET_SKINS_KEY]) ?? []
 
-      triggerPendingSkin(previousSkins, qc)
+      triggerPendingSkin(previousSkins)
 
       // context for onError
       return { previousSkins }
@@ -54,6 +66,10 @@ function useSkin() {
 
   const { mutate: deleteSkin, isPending: isDeleting } = useMutation({
     mutationFn: async (skin: Skin) => {
+      if (!sessionData?.user) {
+        return setLocalSkins(prev => prev.filter(s => s.id !== skin.id))
+      }
+
       return deleteSkinAction(skin)
     },
     mutationKey: [DELETE_SKIN_KEY],
@@ -70,7 +86,7 @@ function useSkin() {
 
       const previousSkins = qc.getQueryData<Skin[]>([GET_SKINS_KEY]) ?? []
 
-      removeSkinOptimistically(skin, qc)
+      removeSkinOptimistically(skin)
 
       // context for onError
       return { previousSkins }
@@ -78,60 +94,69 @@ function useSkin() {
     onSettled: () => refetchSkins(),
   })
 
-  const isMutating = isPosting || isDeleting
+  function triggerPendingSkin(previousSkins: Skin[]) {
+    const pendingSkin: Skin = {
+      base64: '',
+      createdAt: new Date(),
+      headBase64: '',
+      id: 'pending',
+      name: '',
+      skinType: 'CLASSIC',
+      userId: '',
+      uuid: '',
+    }
+
+    if (!sessionData?.user) {
+      return setLocalSkins(prev => [...prev, pendingSkin])
+    }
+
+    qc.setQueryData<Skin[]>([GET_SKINS_KEY], () => [
+      ...previousSkins,
+      pendingSkin,
+    ])
+  }
+
+  function removePendingSkin() {
+    if (!sessionData?.user) {
+      return setLocalSkins(prev => prev.filter(skin => skin.id !== 'pending'))
+    }
+
+    const previousSkins = qc.getQueryData<Skin[]>([GET_SKINS_KEY]) ?? []
+    qc.setQueryData<Skin[]>([GET_SKINS_KEY], () =>
+      previousSkins.filter(skin => skin.id !== 'pending'),
+    )
+  }
+
+  function addSkinOptimistically(skinInput: Omit<Skin, 'userId'>) {
+    const skin: Skin = { ...skinInput, userId: '' }
+
+    setCurrentSkin(skin)
+
+    if (!sessionData?.user) {
+      return setLocalSkins(prev => [...prev, skin])
+    }
+
+    const previousSkins = qc.getQueryData<Skin[]>([GET_SKINS_KEY]) ?? []
+    qc.setQueryData<Skin[]>([GET_SKINS_KEY], () => [...previousSkins, skin])
+  }
+
+  function removeSkinOptimistically(skin: Skin) {
+    const previousSkins = qc.getQueryData<Skin[]>([GET_SKINS_KEY]) ?? []
+
+    qc.setQueryData<Skin[]>([GET_SKINS_KEY], () =>
+      previousSkins.filter(s => s.id !== skin.id),
+    )
+  }
+
+  const canMutate = isPosting || isDeleting || isLoadingSession
+  const skins = sessionData?.user ? userSkins : localSkins
 
   return {
+    canMutate,
     deleteSkin,
-    isMutating,
     postSkin,
     skins,
   }
 }
 
 export { useSkin }
-
-function triggerPendingSkin(previousSkins: Skin[], qc: QueryClient) {
-  const pendingSkin: Skin = {
-    base64: '',
-    createdAt: new Date(),
-    headBase64: '',
-    id: 'pending',
-    name: '',
-    skinType: 'CLASSIC',
-    userId: '',
-    uuid: '',
-  }
-
-  qc.setQueryData<Skin[]>([GET_SKINS_KEY], () => [
-    ...previousSkins,
-    pendingSkin,
-  ])
-}
-
-function removePendingSkin(qc: QueryClient) {
-  const previousSkins = qc.getQueryData<Skin[]>([GET_SKINS_KEY]) ?? []
-  qc.setQueryData<Skin[]>([GET_SKINS_KEY], () =>
-    previousSkins.filter(skin => skin.id !== 'pending'),
-  )
-}
-
-function addSkinOptimistically(
-  skinInput: Omit<Skin, 'userId'>,
-  qc: QueryClient,
-  setCurrentSkin?: (skin: Skin) => void,
-) {
-  const skin: Skin = { ...skinInput, userId: '' }
-
-  setCurrentSkin?.(skin)
-
-  const previousSkins = qc.getQueryData<Skin[]>([GET_SKINS_KEY]) ?? []
-  qc.setQueryData<Skin[]>([GET_SKINS_KEY], () => [...previousSkins, skin])
-}
-
-function removeSkinOptimistically(skin: Skin, qc: QueryClient) {
-  const previousSkins = qc.getQueryData<Skin[]>([GET_SKINS_KEY]) ?? []
-
-  qc.setQueryData<Skin[]>([GET_SKINS_KEY], () =>
-    previousSkins.filter(s => s.id !== skin.id),
-  )
-}
