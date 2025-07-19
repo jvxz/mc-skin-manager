@@ -1,18 +1,30 @@
 'use client'
+import { useRef } from 'react'
+import { Virtualizer } from 'virtua'
 import { SkinListCard } from '@/actions/client/skin/list-card'
 import { useSkin } from '@/hooks/use-skin'
+import { ScrollArea } from '../ui/scroll-area'
 import { SkinListHeader } from './list-header'
 
 function SkinList() {
+  const scrollRef = useRef<HTMLDivElement>(null)
   const { skins } = useSkin()
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex w-[400px] flex-col gap-3">
       <SkinListHeader />
-      <div className="flex flex-col gap-3">
-        {skins?.map(skin => (
-          <SkinListCard key={skin.id} skin={skin} />
-        ))}
+      <div className="h-full">
+        <ScrollArea type="always" className="h-full" ref={scrollRef}>
+          <Virtualizer overscan={16} scrollRef={scrollRef}>
+            {skins?.map(skin => (
+              <SkinListCard
+                key={skin.id}
+                skin={skin}
+                className="!mb-3 first:mt-px last:mb-px"
+              />
+            ))}
+          </Virtualizer>
+        </ScrollArea>
       </div>
     </div>
   )

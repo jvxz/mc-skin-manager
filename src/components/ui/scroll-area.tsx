@@ -1,21 +1,23 @@
 'use client'
 import { ScrollArea as ScrollAreaPrimitive } from 'radix-ui'
-import type { ComponentProps } from 'react'
+import type { ComponentProps, ComponentPropsWithRef } from 'react'
 import { cn } from '@/lib/utils'
 
 function ScrollArea({
   className,
   children,
+  ref,
   ...props
-}: ComponentProps<typeof ScrollAreaPrimitive.Root>) {
+}: ComponentPropsWithRef<typeof ScrollAreaPrimitive.Root>) {
   return (
     <ScrollAreaPrimitive.Root
       data-slot="scroll-area"
-      className={cn('relative', className)}
+      className={cn('relative ', className)}
       {...props}>
       <ScrollAreaPrimitive.Viewport
+        ref={ref}
         data-slot="scroll-area-viewport"
-        className="size-full rounded-[inherit] outline-ring/50 ring-ring/10 focus-visible:outline-1 focus-visible:ring-4 dark:outline-ring/40 dark:ring-ring/20">
+        className="size-full rounded-[inherit] pr-3 outline-ring/50 ring-ring/10 focus-visible:outline-1 focus-visible:ring-4 dark:outline-ring/40 dark:ring-ring/20">
         {children}
       </ScrollAreaPrimitive.Viewport>
       <ScrollBar />

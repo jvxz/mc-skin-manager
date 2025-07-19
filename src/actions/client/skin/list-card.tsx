@@ -26,7 +26,7 @@ import { cn } from '@/lib/utils'
 
 dayjs.extend(relativeTime)
 
-function SkinListCard({ skin }: { skin: Skin }) {
+function SkinListCard({ skin, className }: { skin: Skin; className?: string }) {
   const { deleteSkin } = useSkin()
   const setSkin = useSetAtom(currentSkinAtom)
 
@@ -50,6 +50,7 @@ function SkinListCard({ skin }: { skin: Skin }) {
             buttonVariants({ variant: 'outline' }),
             staticStyles.variant.default,
             'flex h-18 flex-row items-center justify-start gap-3 p-3 transition duration-150',
+            className,
           )}>
           <Image
             src={`data:image/png;base64,${skin.headBase64}`}
