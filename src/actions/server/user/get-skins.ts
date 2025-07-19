@@ -4,7 +4,7 @@ import { db } from '@/db'
 import { skins } from '@/db/schema'
 import { getAuthData } from '../utils/get-auth-data'
 
-export async function getSkins() {
+export async function getUserSkins() {
   const authData = await getAuthData()
 
   const userSkins = await db.query.skins.findMany({
