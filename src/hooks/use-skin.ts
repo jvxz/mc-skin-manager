@@ -1,8 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useAtom } from 'jotai'
+import { toast } from 'sonner'
 import { getSkinData } from '@/actions/client/skin/get-skin-data'
 import { deleteUserSkin as deleteSkinAction } from '@/actions/server/user/delete-skin'
 import { getUserSkins } from '@/actions/server/user/get-skins'
+import { migrateLocalSkinsToUser } from '@/actions/server/user/migrate-skins'
 import { postUserSkin as postSkinAction } from '@/actions/server/user/post-skin'
 import { useSession } from '@/auth/client'
 import { currentSkinAtom } from '@/components/skin/viewer'
@@ -13,6 +15,7 @@ import { localSkinsAtom } from '@/stores/local-skins'
 const POST_SKIN_KEY = 'post-skin'
 const GET_SKINS_KEY = 'user-skins'
 const DELETE_SKIN_KEY = 'delete-skin'
+const MIGRATE_LOCAL_SKINS_KEY = 'migrate-local-skins'
 
 function useSkin() {
   const qc = useQueryClient()
@@ -94,6 +97,22 @@ function useSkin() {
     onSettled: () => refetchSkins(),
   })
 
+  const { mutate: migrateLocalSkins, isPending: isMigrating } = useMutation({
+    mutationFn: async () => {
+      await migrateLocalSkinsToUser(localSkins)
+      await refetchSkins()
+    },
+    mutationKey: [MIGRATE_LOCAL_SKINS_KEY],
+    onError: err => {
+      handleQueryError(err)
+    },
+    // onMutate: async (skin: Skin) => {},
+    onSuccess: () => {
+      setLocalSkins([])
+      toast.success('Your skins have been migrated')
+    },
+  })
+
   function triggerPendingSkin(previousSkins: Skin[]) {
     const pendingSkin: Skin = {
       base64: '',
@@ -148,12 +167,13 @@ function useSkin() {
     )
   }
 
-  const canMutate = isPosting || isDeleting || isLoadingSession
+  const canMutate = isPosting || isDeleting || isLoadingSession || isMigrating
   const skins = sessionData?.user ? userSkins : localSkins
 
   return {
     canMutate,
     deleteSkin,
+    migrateLocalSkins,
     postSkin,
     skins,
   }
