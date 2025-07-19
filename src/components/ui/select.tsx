@@ -1,4 +1,5 @@
 'use client'
+import { IconCheck, IconChevronDown, IconChevronUp } from '@tabler/icons-react'
 import { Select as SelectPrimitive } from 'radix-ui'
 import type { ComponentProps } from 'react'
 import { interactiveStyles, popoverStyles } from '@/lib/styles'
@@ -30,14 +31,15 @@ function SelectTrigger({
       data-slot="select-trigger"
       className={cn(
         interactiveStyles.base,
+        interactiveStyles.size.default,
         interactiveStyles.variant.outline,
-        'flex h-9 w-fit items-center justify-between gap-2 whitespace-nowrap px-3 py-2 text-sm data-[placeholder]:text-muted-foreground *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2',
+        'flex w-fit items-center justify-between gap-2 whitespace-nowrap px-3 py-2 text-sm data-[placeholder]:text-muted-foreground *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2',
         className,
       )}
       {...props}>
       {children}
       <SelectPrimitive.Icon asChild>
-        <svg className="iconify ph--caret-down size-4 opacity-50" />
+        <IconChevronDown className="size-4" />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   )
@@ -52,6 +54,7 @@ function SelectContent({
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
+        sideOffset={3}
         data-slot="select-content"
         className={cn(
           popoverStyles.content,
@@ -106,7 +109,7 @@ function SelectItem({
       {...props}>
       <span className="absolute right-2 flex size-3.5 items-center justify-center">
         <SelectPrimitive.ItemIndicator>
-          <svg className="iconify ph--check size-4 text-foreground" />
+          <IconCheck className="size-4 text-foreground" />
         </SelectPrimitive.ItemIndicator>
       </span>
       <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
@@ -139,7 +142,7 @@ function SelectScrollUpButton({
         className,
       )}
       {...props}>
-      <svg className="iconify ph--caret-up size-4" />
+      <IconChevronUp className="size-4" />
     </SelectPrimitive.ScrollUpButton>
   )
 }
@@ -156,7 +159,7 @@ function SelectScrollDownButton({
         className,
       )}
       {...props}>
-      <svg className="iconify ph--caret-down size-4" />
+      <IconChevronDown className="size-4" />
     </SelectPrimitive.ScrollDownButton>
   )
 }

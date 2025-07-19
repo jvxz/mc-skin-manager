@@ -1,4 +1,5 @@
 'use client'
+import { IconX } from '@tabler/icons-react'
 import { Dialog as DialogPrimitive } from 'radix-ui'
 import type { ComponentProps } from 'react'
 import { interactiveStyles, overlayStyles, staticStyles } from '@/lib/styles'
@@ -52,7 +53,7 @@ function DialogContent({
         className={cn(
           staticStyles.base,
           staticStyles.variant.default,
-          'data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-bottom-2 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 data-[state=open]:animate-in sm:max-w-xl',
+          'data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-bottom-2 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 p-5 data-[state=open]:animate-in sm:max-w-xl',
           className,
         )}
         {...props}>
@@ -64,7 +65,7 @@ function DialogContent({
             interactiveStyles.size.icon,
             'absolute top-3 right-3 inline-flex size-6 items-center justify-center opacity-70',
           )}>
-          <svg className="ph--x iconify size-4" />
+          <IconX className="!size-4" />
           <span className="sr-only">Close</span>
         </DialogPrimitive.Close>
       </DialogPrimitive.Content>
