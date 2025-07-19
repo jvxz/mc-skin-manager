@@ -1,7 +1,7 @@
 import { IconBoxModel, IconCursorText, IconTrash } from '@tabler/icons-react'
 import { useSetAtom } from 'jotai'
 import Image from 'next/image'
-import { currentSkinAtom } from '@/components/skin/viewer'
+import { currentSkinAtom } from '@/components/skin/viewer-canvas'
 import { buttonVariants } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import {

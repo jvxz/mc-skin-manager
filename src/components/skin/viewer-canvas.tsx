@@ -29,7 +29,7 @@ class WalkAnimation extends PlayerAnimation {
   }
 }
 
-function SkinViewer() {
+function SkinViewerCanvas() {
   const skin = useAtomValue(currentSkinAtom)
 
   const model = useMemo((): SkinViewerOptions['model'] => {
@@ -84,4 +84,4 @@ function SkinViewer() {
   )
 }
 
-export { SkinViewer }
+export { SkinViewerCanvas }
