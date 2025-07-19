@@ -21,7 +21,7 @@ const interactiveStyles = {
 }
 
 const staticStyles = {
-  base: 'rounded p-3',
+  base: 'rounded p-4',
   variant: {
     default:
       'bg-card shadow-[0px_-1px_0px_0px_hsl(from_var(--muted-foreground)_h_s_l/0.25),0px_1px_0px_0px_hsl(from_var(--muted)_h_s_l),0px_8px_12px_0px_hsl(from_var(--background)_h_s_l/0.5)] border border-y-0 text-card-foreground',

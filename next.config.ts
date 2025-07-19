@@ -6,7 +6,6 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   experimental: {
-    devtoolNewPanelUI: true,
     reactCompiler: true,
   },
   logging: {
