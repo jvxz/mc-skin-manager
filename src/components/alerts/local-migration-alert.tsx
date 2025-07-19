@@ -1,6 +1,8 @@
 import { useAtom } from 'jotai'
 import { useCallback } from 'react'
+import { toast } from 'sonner'
 import { useSession } from '@/auth/client'
+import { useSkin } from '@/hooks/use-skin'
 import { localSkinsAtom } from '@/stores/local-skins'
 import {
   AlertDialog,
@@ -13,8 +15,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '../ui/alert-dialog'
-import { toast } from 'sonner'
-import { useSkin } from '@/hooks/use-skin'
 import { Button } from '../ui/button'
 
 function LocalMigrationAlert() {
@@ -46,15 +46,11 @@ function LocalMigrationAlert() {
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Local skin migration</AlertDialogTitle>
-          <AlertDialogDescription className="space-y-2">
-            <p>
+          <AlertDialogDescription className="my-2 space-y-2">
+            <p className="leading-relaxed">
               It seems like you have imported skins while you were not logged
               in. These skins will not sync across devices. Would you like to
               migrate them to your account?
-            </p>
-            <p className="font-medium">
-              Your local skins will be lost should you decide not to migrate
-              them.
             </p>
           </AlertDialogDescription>
         </AlertDialogHeader>
