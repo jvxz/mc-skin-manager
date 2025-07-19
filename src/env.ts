@@ -10,6 +10,8 @@ export const env = createEnv({
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
     DATABASE_URL: process.env.DATABASE_URL,
     GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
+    MICROSOFT_CLIENT_ID: process.env.MICROSOFT_CLIENT_ID,
+    MICROSOFT_CLIENT_SECRET: process.env.MICROSOFT_CLIENT_SECRET,
     NEXT_PUBLIC_BETTER_AUTH_URL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL,
     NEXT_PUBLIC_GITHUB_CLIENT_ID: process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID,
   },
@@ -17,5 +19,7 @@ export const env = createEnv({
     BETTER_AUTH_SECRET: z.string().length(32),
     DATABASE_URL: z.url(),
     GITHUB_CLIENT_SECRET: z.string(),
+    MICROSOFT_CLIENT_ID: z.string(),
+    MICROSOFT_CLIENT_SECRET: z.string(),
   },
 })

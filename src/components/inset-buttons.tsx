@@ -1,5 +1,6 @@
 import { IconLayoutSidebar } from '@tabler/icons-react'
 import { useExpanded } from '@/hooks/use-expanded'
+import { InsetButtonsAuth } from './inset-buttons-auth'
 import { Button } from './ui/button'
 
 function InsetButtons() {
@@ -7,12 +8,15 @@ function InsetButtons() {
 
   return (
     <div className="absolute inset-0 m-2 w-[calc(var(--expanded)-1.5rem)]">
-      <Button
-        variant="ghost"
-        onClick={() => setExpanded(!expanded)}
-        className="size-16">
-        <IconLayoutSidebar className="!size-7" />
-      </Button>
+      <div className="flex flex-col gap-2">
+        <Button
+          variant="ghost"
+          onClick={() => setExpanded(!expanded)}
+          className="size-16">
+          <IconLayoutSidebar className="!size-8" />
+        </Button>
+        <InsetButtonsAuth />
+      </div>
     </div>
   )
 }

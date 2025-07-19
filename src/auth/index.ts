@@ -14,5 +14,11 @@ export const auth = betterAuth({
       clientId: env.NEXT_PUBLIC_GITHUB_CLIENT_ID,
       clientSecret: env.GITHUB_CLIENT_SECRET,
     },
+    microsoft: {
+      clientId: env.MICROSOFT_CLIENT_ID,
+      clientSecret: env.MICROSOFT_CLIENT_SECRET,
+      prompt: 'select_account',
+      tenantId: 'common',
+    },
   },
 })
