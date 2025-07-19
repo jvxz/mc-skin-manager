@@ -1,6 +1,4 @@
 import { IconBoxModel, IconCursorText, IconTrash } from '@tabler/icons-react'
-import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
 import { useSetAtom } from 'jotai'
 import Image from 'next/image'
 import { currentSkinAtom } from '@/components/skin/viewer'
@@ -22,9 +20,7 @@ import {
 import type { Skin } from '@/db/schema'
 import { useSkin } from '@/hooks/use-skin'
 import { staticStyles } from '@/lib/styles'
-import { cn } from '@/lib/utils'
-
-dayjs.extend(relativeTime)
+import { cn, formatDate, timeAgo } from '@/lib/utils'
 
 function SkinListCard({ skin, className }: { skin: Skin; className?: string }) {
   const { deleteSkin } = useSkin()
@@ -73,12 +69,12 @@ function SkinListCard({ skin, className }: { skin: Skin; className?: string }) {
               <Tooltip delayDuration={1000}>
                 <TooltipTrigger asChild>
                   <p className="cursor-pointer text-muted-foreground text-xs">
-                    {dayjs(skin.createdAt).fromNow()}
+                    {timeAgo(new Date(skin.createdAt))}
                   </p>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p className="font-medium text-muted-foreground text-xs">
-                    {dayjs(skin.createdAt).format('MMM DD, YYYY h:mma')}
+                    {formatDate(new Date(skin.createdAt))}
                   </p>
                 </TooltipContent>
               </Tooltip>
