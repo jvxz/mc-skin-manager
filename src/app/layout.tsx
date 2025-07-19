@@ -12,7 +12,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
+    <html
+      lang="en"
+      className={`${sans.variable} ${mono.variable} overflow-y-hidden`}>
       {process.env.NODE_ENV === 'development' && (
         <head>
           <script
