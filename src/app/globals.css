@@ -29,6 +29,7 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-overlay: var(--overlay);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -101,6 +102,7 @@
   --input: hsl(223.8136 0.0001% 92.1478%);
   --ring: hsl(0 0% 0%);
   --radius: 0.5rem;
+  --overlay: hsl(0 0% 0% / 0.5);
 
   --expanded: 32rem;
   --not-expanded: 5.5rem;
