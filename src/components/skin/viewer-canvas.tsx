@@ -65,22 +65,40 @@ function SkinViewerCanvas() {
     viewer.camera.far = 60 + 20
     // default camera position
     viewer.camera.position.set(-25, 20, 48)
+
+    // viewer
   }, [])
 
   return (
-    <ReactSkinview3d
-      data-active={!!skin}
-      options={{
-        animation: new WalkAnimation(),
-        fov: 35,
-        model,
-      }}
-      className="data-[active=false]:hidden"
-      width={500}
-      onReady={handleReady}
-      height={700}
-      skinUrl={skin?.base64 ?? ''}
-    />
+    <div className="relative size-full">
+      <ReactSkinview3d
+        data-active={!!skin}
+        options={{
+          animation: new WalkAnimation(),
+          fov: 35,
+          model,
+        }}
+        className="size-full data-[active=false]:hidden"
+        width={576}
+        onReady={handleReady}
+        height={704}
+        skinUrl={skin?.base64 ?? ''}
+      />
+      <div
+        className="-z-10 absolute inset-0 block rounded bg-repeat dark:hidden"
+        style={{
+          backgroundImage:
+            'url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACAAQMAAAD58POIAAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAZQTFRF/Pz85ubmamHL2wAAACVJREFUeJxjZICC/1CacVRgVGBUYFSASAF0mVGBUYFRgVEBIgUAct6AQSI44csAAAAASUVORK5CYII=)',
+        }}
+      />
+      <div
+        className="-z-10 absolute inset-0 hidden rounded bg-repeat dark:block"
+        style={{
+          backgroundImage:
+            'url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACAAQMAAAD58POIAAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAZQTFRFHR0dCQkJh+NMmQAAACVJREFUeJxjZICC/1CacVRgVGBUYFSASAF0mVGBUYFRgVEBIgUAct6AQSI44csAAAAASUVORK5CYII=)',
+        }}
+      />
+    </div>
   )
 }
 
