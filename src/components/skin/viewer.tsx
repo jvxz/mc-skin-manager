@@ -1,13 +1,18 @@
+import { SkinViewerActions } from './viewer-actions'
 import { SkinViewerCanvas } from './viewer-canvas'
+import { SkinViewerInfo } from './viewer-info'
 
 function SkinViewer() {
   return (
-    <div className="flex size-full">
-      <div className="size-full "></div>
+    <div className="mx-auto flex h-fit w-[50%] gap-6">
+      {/* <div className="size-full "></div> */}
       <div className="relative shrink-0 self-center">
         <SkinViewerCanvas />
       </div>
-      <div className="size-full "></div>
+      <div className="flex w-full flex-col gap-3">
+        <SkinViewerInfo />
+        <SkinViewerActions />
+      </div>
     </div>
   )
 }
