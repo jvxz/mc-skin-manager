@@ -5,14 +5,14 @@ import { db } from '@/db'
 import { schema } from '@/db/schema'
 import { env } from '@/env'
 
-const redirect = '/settings'
+const redirect = '/settings/account'
 
 export async function GET(request: NextRequest) {
   const authData = await getAuthData()
 
   if (!authData) {
     return NextResponse.redirect(
-      new URL('/bind-microsoft-account?error=unauthorized', request.url),
+      new URL(`${redirect}?error=unauthorized`, request.url),
     )
   }
 
