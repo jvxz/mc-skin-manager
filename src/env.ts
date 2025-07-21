@@ -4,22 +4,27 @@ import { z } from 'zod'
 export const env = createEnv({
   client: {
     NEXT_PUBLIC_BETTER_AUTH_URL: z.url(),
+    NEXT_PUBLIC_DISCORD_CLIENT_ID: z.string(),
     NEXT_PUBLIC_GITHUB_CLIENT_ID: z.string(),
+    NEXT_PUBLIC_MICROSOFT_CLIENT_ID: z.string(),
   },
   runtimeEnv: {
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
     DATABASE_URL: process.env.DATABASE_URL,
+    DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
     GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
-    MICROSOFT_CLIENT_ID: process.env.MICROSOFT_CLIENT_ID,
     MICROSOFT_CLIENT_SECRET: process.env.MICROSOFT_CLIENT_SECRET,
     NEXT_PUBLIC_BETTER_AUTH_URL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL,
+    NEXT_PUBLIC_DISCORD_CLIENT_ID: process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID,
     NEXT_PUBLIC_GITHUB_CLIENT_ID: process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID,
+    NEXT_PUBLIC_MICROSOFT_CLIENT_ID:
+      process.env.NEXT_PUBLIC_MICROSOFT_CLIENT_ID,
   },
   server: {
     BETTER_AUTH_SECRET: z.string().length(32),
     DATABASE_URL: z.url(),
+    DISCORD_CLIENT_SECRET: z.string(),
     GITHUB_CLIENT_SECRET: z.string(),
-    MICROSOFT_CLIENT_ID: z.string(),
     MICROSOFT_CLIENT_SECRET: z.string(),
   },
 })

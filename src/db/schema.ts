@@ -36,6 +36,7 @@ export const account = pgTable('account', {
   createdAt: timestamp('created_at').notNull(),
   id: text('id').primaryKey(),
   idToken: text('id_token'),
+  mojangAccessToken: text('mojang_access_token'),
   password: text('password'),
   providerId: text('provider_id').notNull(),
   refreshToken: text('refresh_token'),

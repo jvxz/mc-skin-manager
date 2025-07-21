@@ -4,6 +4,7 @@ import {
   IconLogout,
   IconUserCircle,
 } from '@tabler/icons-react'
+import { useState } from 'react'
 import { signIn, signOut, useSession } from '@/auth/client'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { Button } from './ui/button'
@@ -14,11 +15,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from './ui/dialog'
-import { MdiMicrosoft } from './ui/icons/microsoft'
+import { IcBaselineDiscord } from './ui/icons/discord'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import { Spinner } from './ui/spinner'
 
 function InsetButtonsAuth() {
+  const [isLoading, setIsLoading] = useState<'discord' | 'github' | null>(null)
   const { data: sessionData, isPending } = useSession()
 
   if (isPending)
@@ -72,15 +74,23 @@ function InsetButtonsAuth() {
           <DialogTitle className="text-center">Welcome back!</DialogTitle>
         </DialogHeader>
         <Button
-          isLoading={isPending}
-          onClick={() => signIn.social({ provider: 'microsoft' })}
-          className="!glow-lime-500 border border-[#74b03c] bg-[#74b03c]/85 text-[#74b03c]-foreground hover:bg-[#74b03c]/90 focus-visible:border-[#74b03c]/50 active:bg-[#74b03c]/85">
-          <MdiMicrosoft className="!size-4" />
-          Sign in with Microsoft
+          isLoading={isLoading === 'discord'}
+          onClick={() => {
+            setIsLoading('discord')
+            signIn.social({ provider: 'discord' })
+          }}
+          disabled={isLoading !== null && isLoading !== 'discord'}
+          className="!glow-indigo-500 border border-[#5866F2] bg-[#5866F2]/85 text-[#5866F2]-foreground hover:bg-[#5866F2]/90 focus-visible:border-[#5866F2]/50 active:bg-[#5866F2]/85">
+          <IcBaselineDiscord className="!size-4" />
+          Sign in with Discord
         </Button>
         <Button
-          isLoading={isPending}
-          onClick={() => signIn.social({ provider: 'github' })}
+          isLoading={isLoading === 'github'}
+          onClick={() => {
+            setIsLoading('github')
+            signIn.social({ provider: 'github' })
+          }}
+          disabled={isLoading !== null && isLoading !== 'github'}
           className="!glow-gray-500 border border-[#28282b] bg-[#28282b]/85 text-[#28282b]-foreground hover:bg-[#28282b]/90 focus-visible:border-[#28282b]/50 active:bg-[#28282b]/85">
           <IconBrandGithubFilled className="!size-4" />
           Sign in with GitHub

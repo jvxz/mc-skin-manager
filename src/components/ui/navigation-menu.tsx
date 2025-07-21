@@ -1,5 +1,5 @@
-import { NavigationMenu as NavigationMenuPrimitive } from 'radix-ui'
 import { cva } from 'class-variance-authority'
+import { NavigationMenu as NavigationMenuPrimitive } from 'radix-ui'
 import type { ComponentProps } from 'react'
 import { popoverStyles, staticStyles } from '@/lib/styles'
 import { cn } from '@/lib/utils'

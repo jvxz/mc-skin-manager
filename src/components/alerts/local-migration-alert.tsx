@@ -18,7 +18,7 @@ import {
 import { Button } from '../ui/button'
 
 function LocalMigrationAlert() {
-  const { migrateLocalSkins, canMutate } = useSkin()
+  const { migrateLocalSkins, isMutating } = useSkin()
 
   const [localSkins, setLocalSkins] = useAtom(localSkinsAtom)
   const { data: sessionData, isPending: isLoadingSession } = useSession()
@@ -57,7 +57,7 @@ function LocalMigrationAlert() {
         <AlertDialogFooter>
           <AlertDialogCancel onClick={handleDelete}>Delete</AlertDialogCancel>
           <AlertDialogAction asChild>
-            <Button isLoading={canMutate} onClick={handleMigrate}>
+            <Button isLoading={isMutating} onClick={handleMigrate}>
               Migrate
             </Button>
           </AlertDialogAction>

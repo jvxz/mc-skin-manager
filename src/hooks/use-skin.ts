@@ -9,7 +9,7 @@ import { postUserSkin as postSkinAction } from '@/actions/server/user/post-skin'
 import { useSession } from '@/auth/client'
 import { currentSkinAtom } from '@/components/skin/viewer-canvas'
 import type { Skin } from '@/db/schema'
-import { handleQueryError } from '@/lib/trpc/query-client'
+import { handleQueryError } from '@/lib/query-client'
 import { localSkinsAtom } from '@/stores/local-skins'
 
 const POST_SKIN_KEY = 'post-skin'
@@ -167,12 +167,12 @@ function useSkin() {
     )
   }
 
-  const canMutate = isPosting || isDeleting || isLoadingSession || isMigrating
+  const isMutating = isPosting || isDeleting || isLoadingSession || isMigrating
   const skins = sessionData?.user ? userSkins : localSkins
 
   return {
-    canMutate,
     deleteSkin,
+    isMutating,
     migrateLocalSkins,
     postSkin,
     skins,
