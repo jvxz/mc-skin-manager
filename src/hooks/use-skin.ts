@@ -167,12 +167,12 @@ function useSkin() {
     )
   }
 
-  const canMutate = isPosting || isDeleting || isLoadingSession || isMigrating
+  const isMutating = isPosting || isDeleting || isLoadingSession || isMigrating
   const skins = sessionData?.user ? userSkins : localSkins
 
   return {
-    canMutate,
     deleteSkin,
+    isMutating,
     migrateLocalSkins,
     postSkin,
     skins,
