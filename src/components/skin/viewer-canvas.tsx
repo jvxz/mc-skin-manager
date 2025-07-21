@@ -85,14 +85,14 @@ function SkinViewerCanvas() {
         skinUrl={skin?.base64 ?? ''}
       />
       <div
-        className="-z-10 absolute inset-0 block rounded bg-repeat dark:hidden"
+        className="-z-10 absolute inset-0 block rounded bg-repeat opacity-80 dark:hidden"
         style={{
           backgroundImage:
             'url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACAAQMAAAD58POIAAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAZQTFRF/Pz85ubmamHL2wAAACVJREFUeJxjZICC/1CacVRgVGBUYFSASAF0mVGBUYFRgVEBIgUAct6AQSI44csAAAAASUVORK5CYII=)',
         }}
       />
       <div
-        className="-z-10 absolute inset-0 hidden rounded bg-repeat dark:block"
+        className="-z-10 absolute inset-0 hidden rounded bg-repeat opacity-80 dark:block"
         style={{
           backgroundImage:
             'url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACAAQMAAAD58POIAAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAZQTFRFHR0dCQkJh+NMmQAAACVJREFUeJxjZICC/1CacVRgVGBUYFSASAF0mVGBUYFRgVEBIgUAct6AQSI44csAAAAASUVORK5CYII=)',
