@@ -6,6 +6,7 @@ import type { ThemeProviderProps } from 'next-themes'
 import { NuqsAdapter } from 'nuqs/adapters/next'
 import { makeQueryClient } from '@/lib/query-client'
 import { LocalMigrationAlert } from './alerts/local-migration-alert'
+import { TailwindIndicator } from './tailwind-indicator'
 import { Toaster } from './ui/sonner'
 
 // prevent hydration errors
@@ -30,6 +31,7 @@ function Providers({ children, ...props }: ThemeProviderProps) {
         <NuqsAdapter>{children}</NuqsAdapter>
         <Toaster />
         <LocalMigrationAlert />
+        <TailwindIndicator />
         <ReactQueryDevtools />
       </NextThemesProvider>
     </QueryClientProvider>
