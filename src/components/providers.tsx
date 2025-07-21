@@ -1,9 +1,10 @@
 'use client'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import dynamic from 'next/dynamic'
 import type { ThemeProviderProps } from 'next-themes'
 import { NuqsAdapter } from 'nuqs/adapters/next'
-import { TRPCReactProvider } from '@/lib/trpc/client'
+import { idbPersister, makeQueryClient } from '@/lib/query-client'
 import { LocalMigrationAlert } from './alerts/local-migration-alert'
 import { Toaster } from './ui/sonner'
 
@@ -15,9 +16,13 @@ const NextThemesProvider = dynamic(
   },
 )
 
+const queryClient = makeQueryClient()
+
 function Providers({ children, ...props }: ThemeProviderProps) {
   return (
-    <TRPCReactProvider>
+    <PersistQueryClientProvider
+      persistOptions={{ persister: idbPersister() }}
+      client={queryClient}>
       <NextThemesProvider
         disableTransitionOnChange
         attribute="class"
@@ -27,9 +32,9 @@ function Providers({ children, ...props }: ThemeProviderProps) {
         <NuqsAdapter>{children}</NuqsAdapter>
         <Toaster />
         <LocalMigrationAlert />
+        <ReactQueryDevtools />
       </NextThemesProvider>
-      <ReactQueryDevtools />
-    </TRPCReactProvider>
+    </PersistQueryClientProvider>
   )
 }
 

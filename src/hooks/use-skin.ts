@@ -9,7 +9,7 @@ import { postUserSkin as postSkinAction } from '@/actions/server/user/post-skin'
 import { useSession } from '@/auth/client'
 import { currentSkinAtom } from '@/components/skin/viewer'
 import type { Skin } from '@/db/schema'
-import { handleQueryError } from '@/lib/trpc/query-client'
+import { handleQueryError } from '@/lib/query-client'
 import { localSkinsAtom } from '@/stores/local-skins'
 
 const POST_SKIN_KEY = 'post-skin'
