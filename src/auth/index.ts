@@ -18,7 +18,6 @@ export const auth = betterAuth({
       clientId: env.MICROSOFT_CLIENT_ID,
       clientSecret: env.MICROSOFT_CLIENT_SECRET,
       prompt: 'select_account',
-      tenantId: 'common',
     },
   },
 })
