@@ -109,7 +109,7 @@ function useSkin() {
     // onMutate: async (skin: Skin) => {},
     onSuccess: () => {
       setLocalSkins([])
-      toast.success('Your skins have been migrated')
+      toast.success('Your local skins have been migrated')
     },
   })
 

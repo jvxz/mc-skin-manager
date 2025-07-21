@@ -33,6 +33,7 @@ function SkinListCard({ skin, className }: { skin: Skin; className?: string }) {
           buttonVariants({ variant: 'outline' }),
           staticStyles.variant.default,
           'pointer-events-none flex h-18 animate-pulse flex-row items-center justify-start gap-3 p-3',
+          className,
         )}
       />
     )
