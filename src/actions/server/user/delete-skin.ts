@@ -7,6 +7,10 @@ import { getAuthData } from '../utils/get-auth-data'
 export async function deleteUserSkin(skin: Skin) {
   const authData = await getAuthData()
 
+  if (!authData) {
+    throw new Error('Unauthorized')
+  }
+
   if (skin.userId !== authData.user.id) {
     throw new Error('You are not allowed to delete this skin')
   }
