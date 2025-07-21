@@ -5,6 +5,8 @@ import { db } from '@/db'
 import { schema } from '@/db/schema'
 import { env } from '@/env'
 
+const redirect = '/settings'
+
 export async function GET(request: NextRequest) {
   const authData = await getAuthData()
 
@@ -19,7 +21,7 @@ export async function GET(request: NextRequest) {
 
   if (!code) {
     return NextResponse.redirect(
-      new URL('/bind-microsoft-account?error=no_code', request.url),
+      new URL(`${redirect}?error=no_code`, request.url),
     )
   }
 
@@ -27,10 +29,7 @@ export async function GET(request: NextRequest) {
 
   if (!microsoftAccessToken) {
     return NextResponse.redirect(
-      new URL(
-        '/bind-microsoft-account?error=no_microsoft_access_token',
-        request.url,
-      ),
+      new URL(`${redirect}?error=no_microsoft_access_token`, request.url),
     )
   }
 
@@ -38,10 +37,7 @@ export async function GET(request: NextRequest) {
 
   if (!xboxLiveAccessToken) {
     return NextResponse.redirect(
-      new URL(
-        '/bind-microsoft-account?error=no_xbox_live_access_token',
-        request.url,
-      ),
+      new URL(`${redirect}?error=no_xbox_live_access_token`, request.url),
     )
   }
 
@@ -49,10 +45,7 @@ export async function GET(request: NextRequest) {
 
   if (!xboxLiveXstsResponse) {
     return NextResponse.redirect(
-      new URL(
-        '/bind-microsoft-account?error=no_xbox_live_xsts_token',
-        request.url,
-      ),
+      new URL(`${redirect}?error=no_xbox_live_xsts_token`, request.url),
     )
   }
 
@@ -65,10 +58,7 @@ export async function GET(request: NextRequest) {
 
   if (!mojangAccessToken) {
     return NextResponse.redirect(
-      new URL(
-        '/bind-microsoft-account?error=no_mojang_access_token',
-        request.url,
-      ),
+      new URL(`${redirect}?error=no_mojang_access_token`, request.url),
     )
   }
 
@@ -79,9 +69,7 @@ export async function GET(request: NextRequest) {
     })
     .where(eq(schema.account.userId, authData.user.id))
 
-  return NextResponse.redirect(
-    new URL('/bind-microsoft-account?success=true', request.url),
-  )
+  return NextResponse.redirect(new URL(`${redirect}?success=true`, request.url))
 }
 
 async function authMicrosoft(code: string) {
@@ -90,7 +78,7 @@ async function authMicrosoft(code: string) {
 
   const microsoftResponse = await fetch(microsoftAuthUrl, {
     body: new URLSearchParams({
-      client_id: env.MICROSOFT_CLIENT_ID,
+      client_id: env.NEXT_PUBLIC_MICROSOFT_CLIENT_ID,
       client_secret: env.MICROSOFT_CLIENT_SECRET,
       code,
       grant_type: 'authorization_code',
