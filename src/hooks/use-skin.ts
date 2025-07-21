@@ -6,6 +6,7 @@ import { deleteUserSkin as deleteSkinAction } from '@/actions/server/user/delete
 import { getUserSkins } from '@/actions/server/user/get-skins'
 import { migrateLocalSkinsToUser } from '@/actions/server/user/migrate-skins'
 import { postUserSkin as postSkinAction } from '@/actions/server/user/post-skin'
+import { renameUserSkin } from '@/actions/server/user/rename-skin'
 import { useSession } from '@/auth/client'
 import { currentSkinAtom } from '@/components/skin/viewer-canvas'
 import type { Skin } from '@/db/schema'
@@ -14,6 +15,7 @@ import { localSkinsAtom } from '@/stores/local-skins'
 
 const POST_SKIN_KEY = 'post-skin'
 const GET_SKINS_KEY = 'user-skins'
+const RENAME_SKIN_KEY = 'rename-skin'
 const DELETE_SKIN_KEY = 'delete-skin'
 const MIGRATE_LOCAL_SKINS_KEY = 'migrate-local-skins'
 
@@ -65,6 +67,54 @@ function useSkin() {
       return { previousSkins }
     },
     onSettled: () => refetchSkins(),
+  })
+
+  const { mutate: renameSkin, isPending: isRenaming } = useMutation({
+    mutationFn: async ({ skin, name }: { skin: Skin; name: string }) => {
+      if (!sessionData?.user) {
+        const newSkin = { ...skin, name }
+
+        const newLocalSkins = localSkins.map(s =>
+          s.id === skin.id ? newSkin : s,
+        )
+
+        if (currentSkin?.id === skin.id) {
+          setCurrentSkin(newSkin)
+        }
+
+        return setLocalSkins(newLocalSkins)
+      }
+
+      return renameUserSkin(skin, name)
+    },
+    mutationKey: [RENAME_SKIN_KEY],
+    onError: err => {
+      handleQueryError(err)
+    },
+    onMutate: async ({ skin, name }) => {
+      if (sessionData?.user) {
+        await qc.cancelQueries({ queryKey: [GET_SKINS_KEY] })
+        const previousSkins = qc.getQueryData<Skin[]>([GET_SKINS_KEY]) ?? []
+
+        const skinToBeRenamed = previousSkins.find(s => s.id === skin.id)
+
+        if (!skinToBeRenamed) {
+          throw new Error('Skin not found')
+        }
+
+        const newSkins = previousSkins.map(s =>
+          s.id === skin.id ? { ...s, name } : s,
+        )
+
+        if (currentSkin?.id === skin.id) {
+          setCurrentSkin({ ...currentSkin, name })
+        }
+
+        qc.setQueryData<Skin[]>([GET_SKINS_KEY], () => newSkins)
+
+        return { previousSkins }
+      }
+    },
   })
 
   const { mutate: deleteSkin, isPending: isDeleting } = useMutation({
@@ -167,7 +217,8 @@ function useSkin() {
     )
   }
 
-  const isMutating = isPosting || isDeleting || isLoadingSession || isMigrating
+  const isMutating =
+    isPosting || isDeleting || isLoadingSession || isMigrating || isRenaming
   const skins = sessionData?.user ? userSkins : localSkins
 
   return {
@@ -175,6 +226,7 @@ function useSkin() {
     isMutating,
     migrateLocalSkins,
     postSkin,
+    renameSkin,
     skins,
   }
 }

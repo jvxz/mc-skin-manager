@@ -1,9 +1,13 @@
 'use client'
 import { IconPencil } from '@tabler/icons-react'
 import { useAtomValue } from 'jotai'
+import { useState } from 'react'
+import type { Skin } from '@/db/schema'
+import { useSkin } from '@/hooks/use-skin'
 import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
+import { Input } from '../ui/input'
 import { currentSkinAtom } from './viewer-canvas'
 
 function SkinViewerInfo() {
@@ -32,21 +36,10 @@ function SkinViewerInfo() {
     })
   }
 
-  const formatSkinType = (type: string) => {
-    return type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()
-  }
-
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-3xl">
-          <p title={skin.name}>{skin.name}</p>
-          <Button variant="ghost" size="icon">
-            <IconPencil />
-          </Button>
-          <div className="flex-1" />
-          <Badge variant="outline">{formatSkinType(skin.skinType)}</Badge>
-        </CardTitle>
+        <SkinNameEditor skin={skin} />
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
@@ -73,6 +66,53 @@ function SkinViewerInfo() {
         </div>
       </CardContent>
     </Card>
+  )
+}
+
+function SkinNameEditor({ skin }: { skin: Skin }) {
+  const { renameSkin } = useSkin()
+
+  const [isEditing, setIsEditing] = useState(false)
+  const [name, setName] = useState(skin.name)
+
+  const formatSkinType = (type: string) => {
+    return type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()
+  }
+
+  return (
+    <CardTitle className="flex items-center gap-2 text-3xl">
+      {isEditing ? (
+        <Input
+          type="text"
+          value={name}
+          autoFocus
+          className="h-9 text-2xl"
+          onChange={e => setName(e.target.value)}
+          onBlur={() => setIsEditing(false)}
+          onKeyDown={e => {
+            if (e.key === 'Enter') {
+              renameSkin({ name, skin })
+              setIsEditing(false)
+            }
+          }}
+        />
+      ) : (
+        <>
+          <p title={skin.name}>{skin.name}</p>
+          <Button
+            onClick={() => {
+              setIsEditing(true)
+              setName(skin.name)
+            }}
+            variant="ghost"
+            size="icon">
+            <IconPencil />
+          </Button>
+        </>
+      )}
+      <div className="flex-1" />
+      <Badge variant="outline">{formatSkinType(skin.skinType)}</Badge>
+    </CardTitle>
   )
 }
 
