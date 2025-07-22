@@ -44,7 +44,7 @@ function SettingsLinkMicrosoft() {
   )
 }
 
-const link = `https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize?client_id=${env.NEXT_PUBLIC_MICROSOFT_CLIENT_ID}&response_type=code&redirect_uri=${encodeURI(
+const link = `https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize?client_id=${env.NEXT_PUBLIC_MICROSOFT_CLIENT_ID}&prompt=select_account&response_type=code&redirect_uri=${encodeURI(
   `${env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/bind-microsoft-account`,
 )}&response_mode=query&scope=${encodeURI('openid+profile+email+User.Read+XboxLive.SignIn')}`
 
