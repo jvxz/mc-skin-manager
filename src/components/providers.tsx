@@ -29,7 +29,7 @@ function Providers({ children, ...props }: ThemeProviderProps) {
         enableSystem
         {...props}>
         <NuqsAdapter>{children}</NuqsAdapter>
-        <Toaster />
+        <Toaster position="top-center" richColors />
         <LocalMigrationAlert />
         <TailwindIndicator />
         <ReactQueryDevtools />

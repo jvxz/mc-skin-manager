@@ -7,7 +7,7 @@ import type { Skin } from '@/db/schema'
 
 export async function getSkinData(
   input: File | string,
-): Promise<Omit<Skin, 'userId'>> {
+): Promise<Omit<Skin, 'userId' | 'skinUrl'>> {
   const now = new Date()
   const isFile = input instanceof File
   const isUrl = z.url().safeParse(input).success

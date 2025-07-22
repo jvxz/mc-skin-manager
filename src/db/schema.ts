@@ -71,6 +71,7 @@ export const skins = pgTable('skins', {
   id: text('id').primaryKey().notNull(),
   name: text('name').notNull(),
   skinType: text('skin_type').notNull().$type<'SLIM' | 'CLASSIC'>(),
+  skinUrl: text('skin_url').notNull(),
   userId: text('user_id')
     .notNull()
     .references(() => user.id, { onDelete: 'cascade' }),
