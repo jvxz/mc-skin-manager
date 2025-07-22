@@ -1,5 +1,6 @@
 'use client'
 import { IconBug, IconSettings, IconUser } from '@tabler/icons-react'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import {
   CommandDialog,
@@ -14,7 +15,13 @@ import { Button } from './ui/button'
 import { Logo } from './ui/icons/logo'
 
 function InsetButtonsCommandPalette() {
+  const router = useRouter()
   const [open, setOpen] = useState(false)
+
+  const handleSelect = (fn: () => void) => {
+    fn()
+    setOpen(false)
+  }
 
   return (
     <>
@@ -26,15 +33,24 @@ function InsetButtonsCommandPalette() {
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Settings">
-            <CommandItem>
+            <CommandItem
+              onSelect={() =>
+                handleSelect(() => router.push('/settings/general'))
+              }>
               <IconSettings />
               <span>General</span>
             </CommandItem>
-            <CommandItem>
+            <CommandItem
+              onSelect={() =>
+                handleSelect(() => router.push('/settings/account'))
+              }>
               <IconUser />
               <span>Account</span>
             </CommandItem>
-            <CommandItem>
+            <CommandItem
+              onSelect={() =>
+                handleSelect(() => router.push('/settings/debug'))
+              }>
               <IconBug />
               <span>Debug</span>
             </CommandItem>
