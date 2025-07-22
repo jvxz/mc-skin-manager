@@ -1,8 +1,11 @@
 'use server'
 import { eq } from 'drizzle-orm'
+import { UTApi } from 'uploadthing/server'
 import { db } from '@/db'
 import { type Skin, skins } from '@/db/schema'
 import { getAuthData } from '../utils/get-auth-data'
+
+const ut = new UTApi()
 
 export async function deleteUserSkin(skin: Skin) {
   const authData = await getAuthData()
@@ -14,6 +17,14 @@ export async function deleteUserSkin(skin: Skin) {
   if (skin.userId !== authData.user.id) {
     throw new Error('You are not allowed to delete this skin')
   }
+
+  const key = skin.skinUrl.split('/').pop()
+
+  if (!key) {
+    throw new Error('Failed to delete skin')
+  }
+
+  await ut.deleteFiles(key)
 
   await db.delete(skins).where(eq(skins.id, skin.id))
 
