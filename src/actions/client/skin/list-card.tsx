@@ -10,7 +10,7 @@ import { useSetAtom } from 'jotai'
 import Image from 'next/image'
 import { toast } from 'sonner'
 import { getUserMojangData } from '@/actions/server/user/get-user-mojang-data'
-import { currentSkinAtom } from '@/components/skin/viewer'
+import { currentSkinAtom } from '@/components/skin/viewer-canvas'
 import { buttonVariants } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import {

@@ -11,7 +11,7 @@ function SkinList() {
   const { skins } = useSkin()
 
   return (
-    <div className="flex w-[400px] flex-col gap-3">
+    <div className="flex w-[350px] flex-col gap-3 xl:w-[350px] 2xl:flex 2xl:w-[400px]">
       <SkinListHeader />
       <div className="h-full">
         <ScrollArea type="always" className="h-full" ref={scrollRef}>

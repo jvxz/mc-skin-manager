@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  useMutation,
+  useMutationState,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query'
 import { useAtom } from 'jotai'
 import { toast } from 'sonner'
 import { getSkinData } from '@/actions/client/skin/get-skin-data'
@@ -7,21 +12,23 @@ import { deleteUserSkin as deleteSkinAction } from '@/actions/server/user/delete
 import { getUserSkins } from '@/actions/server/user/get-skins'
 import { migrateLocalSkinsToUser } from '@/actions/server/user/migrate-skins'
 import { postUserSkin as postSkinAction } from '@/actions/server/user/post-skin'
+import { renameUserSkin } from '@/actions/server/user/rename-skin'
 import { useSession } from '@/auth/client'
-import { currentSkinAtom } from '@/components/skin/viewer'
+import { currentSkinAtom } from '@/components/skin/viewer-canvas'
 import type { Skin } from '@/db/schema'
 import { handleQueryError } from '@/lib/query-client'
 import { localSkinsAtom } from '@/stores/local-skins'
 
 const POST_SKIN_KEY = 'post-skin'
 const GET_SKINS_KEY = 'user-skins'
+const RENAME_SKIN_KEY = 'rename-skin'
 const DELETE_SKIN_KEY = 'delete-skin'
 const APPLY_SKIN_KEY = 'apply-skin'
 const MIGRATE_LOCAL_SKINS_KEY = 'migrate-local-skins'
 
 function useSkin() {
   const qc = useQueryClient()
-  const { data: sessionData, isPending: isLoadingSession } = useSession()
+  const { data: sessionData } = useSession()
 
   const [currentSkin, setCurrentSkin] = useAtom(currentSkinAtom)
   const [localSkins, setLocalSkins] = useAtom(localSkinsAtom)
@@ -32,7 +39,7 @@ function useSkin() {
     queryKey: [GET_SKINS_KEY],
   })
 
-  const { mutate: postSkin, isPending: isPosting } = useMutation({
+  const { mutate: postSkin } = useMutation({
     mutationFn: async (input: File | string) => {
       const skin = await getSkinData(input)
 
@@ -71,7 +78,55 @@ function useSkin() {
     onSettled: () => refetchSkins(),
   })
 
-  const { mutate: deleteSkin, isPending: isDeleting } = useMutation({
+  const { mutate: renameSkin } = useMutation({
+    mutationFn: async ({ skin, name }: { skin: Skin; name: string }) => {
+      if (!sessionData?.user) {
+        const newSkin = { ...skin, name }
+
+        const newLocalSkins = localSkins.map(s =>
+          s.id === skin.id ? newSkin : s,
+        )
+
+        if (currentSkin?.id === skin.id) {
+          setCurrentSkin(newSkin)
+        }
+
+        return setLocalSkins(newLocalSkins)
+      }
+
+      return renameUserSkin(skin, name)
+    },
+    mutationKey: [RENAME_SKIN_KEY],
+    onError: err => {
+      handleQueryError(err)
+    },
+    onMutate: async ({ skin, name }) => {
+      if (sessionData?.user) {
+        await qc.cancelQueries({ queryKey: [GET_SKINS_KEY] })
+        const previousSkins = qc.getQueryData<Skin[]>([GET_SKINS_KEY]) ?? []
+
+        const skinToBeRenamed = previousSkins.find(s => s.id === skin.id)
+
+        if (!skinToBeRenamed) {
+          throw new Error('Skin not found')
+        }
+
+        const newSkins = previousSkins.map(s =>
+          s.id === skin.id ? { ...s, name } : s,
+        )
+
+        if (currentSkin?.id === skin.id) {
+          setCurrentSkin({ ...currentSkin, name })
+        }
+
+        qc.setQueryData<Skin[]>([GET_SKINS_KEY], () => newSkins)
+
+        return { previousSkins }
+      }
+    },
+  })
+
+  const { mutate: deleteSkin } = useMutation({
     mutationFn: async (skin: Skin) => {
       if (!sessionData?.user) {
         return setLocalSkins(prev => prev.filter(s => s.id !== skin.id))
@@ -101,7 +156,7 @@ function useSkin() {
     onSettled: () => refetchSkins(),
   })
 
-  const { mutate: applySkin, isPending: isApplying } = useMutation({
+  const { mutate: applySkin } = useMutation({
     mutationFn: async (skin: Skin) =>
       toast.promise(applySkinToMc(skin), {
         error: 'Failed to apply skin',
@@ -111,7 +166,7 @@ function useSkin() {
     mutationKey: [APPLY_SKIN_KEY],
   })
 
-  const { mutate: migrateLocalSkins, isPending: isMigrating } = useMutation({
+  const { mutate: migrateLocalSkins } = useMutation({
     mutationFn: async () => {
       await migrateLocalSkinsToUser(localSkins)
       await refetchSkins()
@@ -188,8 +243,11 @@ function useSkin() {
     }
   }
 
-  const isMutating =
-    isPosting || isDeleting || isLoadingSession || isMigrating || isApplying
+  const mutations = useMutationState({
+    filters: { status: 'pending' },
+  })
+
+  const isMutating = mutations.length > 0
 
   const skins = sessionData?.user ? userSkins : localSkins
 
@@ -199,6 +257,7 @@ function useSkin() {
     isMutating,
     migrateLocalSkins,
     postSkin,
+    renameSkin,
     skins,
   }
 }
