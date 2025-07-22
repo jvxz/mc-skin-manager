@@ -70,7 +70,7 @@ function SkinViewerInfo() {
 }
 
 function SkinNameEditor({ skin }: { skin: Skin }) {
-  const { renameSkin } = useSkin()
+  const { renameSkin, isMutating } = useSkin()
 
   const [isEditing, setIsEditing] = useState(false)
   const [name, setName] = useState(skin.name)
@@ -100,6 +100,7 @@ function SkinNameEditor({ skin }: { skin: Skin }) {
         <>
           <p title={skin.name}>{skin.name}</p>
           <Button
+            isLoading={isMutating}
             onClick={() => {
               setIsEditing(true)
               setName(skin.name)

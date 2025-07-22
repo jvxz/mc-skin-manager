@@ -78,7 +78,7 @@ function useSkin() {
     onSettled: () => refetchSkins(),
   })
 
-  const { mutate: renameSkin, isPending: isRenaming } = useMutation({
+  const { mutate: renameSkin } = useMutation({
     mutationFn: async ({ skin, name }: { skin: Skin; name: string }) => {
       if (!sessionData?.user) {
         const newSkin = { ...skin, name }
