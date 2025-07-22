@@ -142,7 +142,7 @@ function CommandItem({
       data-slot="command-item"
       className={cn(
         popoverStyles.item,
-        '!opacity-100 data-[selected=true]:!text-foreground data-[selected=true]:bg-muted',
+        '!opacity-100 data-[selected=true]:!text-foreground transition-none data-[selected=true]:bg-muted',
         className,
       )}
       {...props}
