@@ -40,7 +40,7 @@ function SkinListHeader() {
                 disabled={isMutating}
                 data-1p-ignore
                 className="peer ps-9"
-                placeholder="Username, URL, or UUID"
+                placeholder="Username, UUID, URL, or NameMC"
                 type="text"
                 onChange={e => field.handleChange(e.target.value)}
                 value={field.state.value}

@@ -84,10 +84,7 @@ function Button({
       {children}
       {isLoading && (
         <span className="absolute inset-0 grid place-items-center">
-          <Spinner
-            invert={variant === 'outline' || variant === 'destructive'}
-            className="!size-6 "
-          />
+          <Spinner invert={variant === 'outline'} className="!size-6 " />
         </span>
       )}
     </Comp>
