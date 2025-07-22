@@ -43,12 +43,12 @@ function SkinViewerInfo() {
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          <div className="flex items-center gap-4 text-sm">
+          <div className="flex items-center gap-2 text-sm">
             <p className="text-muted-foreground">Created</p>
             <div className="flex-1 border-b border-dashed"></div>
             <p>{formatDate(skin.createdAt)}</p>
           </div>
-          <div className="flex items-center gap-4 text-sm">
+          <div className="flex items-center gap-2 text-sm">
             <p className="text-muted-foreground">Imported from</p>
             <div className="flex-1 border-b border-dashed"></div>
             <p>TODO</p>
@@ -57,10 +57,14 @@ function SkinViewerInfo() {
           <div className="my-6" />
 
           {skin.uuid && (
-            <div className="flex items-center gap-4 text-sm">
+            <div className="flex items-center gap-2 text-sm">
               <p className="text-muted-foreground">Player UUID</p>
               <div className="flex-1 border-b border-dashed"></div>
-              <p className="break-all font-mono text-xs">{skin.uuid}</p>
+              <p
+                title={skin.uuid}
+                className="truncate break-all font-mono text-xs">
+                {skin.uuid}
+              </p>
             </div>
           )}
         </div>
