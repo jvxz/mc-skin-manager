@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useAtom } from 'jotai'
 import { toast } from 'sonner'
 import { getSkinData } from '@/actions/client/skin/get-skin-data'
+import { applySkinToMc } from '@/actions/server/user/apply-skin-to-mc'
 import { deleteUserSkin as deleteSkinAction } from '@/actions/server/user/delete-skin'
 import { getUserSkins } from '@/actions/server/user/get-skins'
 import { migrateLocalSkinsToUser } from '@/actions/server/user/migrate-skins'
@@ -15,6 +16,7 @@ import { localSkinsAtom } from '@/stores/local-skins'
 const POST_SKIN_KEY = 'post-skin'
 const GET_SKINS_KEY = 'user-skins'
 const DELETE_SKIN_KEY = 'delete-skin'
+const APPLY_SKIN_KEY = 'apply-skin'
 const MIGRATE_LOCAL_SKINS_KEY = 'migrate-local-skins'
 
 function useSkin() {
@@ -24,7 +26,8 @@ function useSkin() {
   const [currentSkin, setCurrentSkin] = useAtom(currentSkinAtom)
   const [localSkins, setLocalSkins] = useAtom(localSkinsAtom)
 
-  const { data: userSkins, refetch: refetchSkins } = useQuery({
+  const { data: userSkins, refetch: _refetchSkins } = useQuery({
+    enabled: !!sessionData?.user,
     queryFn: () => getUserSkins(),
     queryKey: [GET_SKINS_KEY],
   })
@@ -40,6 +43,7 @@ function useSkin() {
           ...prev,
           {
             ...skin,
+            skinUrl: '',
             userId: 'local',
           },
         ])
@@ -97,6 +101,16 @@ function useSkin() {
     onSettled: () => refetchSkins(),
   })
 
+  const { mutate: applySkin, isPending: isApplying } = useMutation({
+    mutationFn: async (skin: Skin) =>
+      toast.promise(applySkinToMc(skin), {
+        error: 'Failed to apply skin',
+        loading: 'Applying skin...',
+        success: 'Your skin was applied to your Minecraft account',
+      }),
+    mutationKey: [APPLY_SKIN_KEY],
+  })
+
   const { mutate: migrateLocalSkins, isPending: isMigrating } = useMutation({
     mutationFn: async () => {
       await migrateLocalSkinsToUser(localSkins)
@@ -121,6 +135,7 @@ function useSkin() {
       id: 'pending',
       name: '',
       skinType: 'CLASSIC',
+      skinUrl: '',
       userId: '',
       uuid: '',
     }
@@ -146,8 +161,8 @@ function useSkin() {
     )
   }
 
-  function addSkinOptimistically(skinInput: Omit<Skin, 'userId'>) {
-    const skin: Skin = { ...skinInput, userId: '' }
+  function addSkinOptimistically(skinInput: Omit<Skin, 'userId' | 'skinUrl'>) {
+    const skin: Skin = { ...skinInput, skinUrl: '', userId: '' }
 
     setCurrentSkin(skin)
 
@@ -167,10 +182,19 @@ function useSkin() {
     )
   }
 
-  const isMutating = isPosting || isDeleting || isLoadingSession || isMigrating
+  async function refetchSkins() {
+    if (sessionData?.user) {
+      await _refetchSkins()
+    }
+  }
+
+  const isMutating =
+    isPosting || isDeleting || isLoadingSession || isMigrating || isApplying
+
   const skins = sessionData?.user ? userSkins : localSkins
 
   return {
+    applySkin,
     deleteSkin,
     isMutating,
     migrateLocalSkins,
