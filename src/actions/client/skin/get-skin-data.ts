@@ -2,15 +2,58 @@ import { z } from 'zod'
 import { getSkinDataFromUser } from '@/actions/server/skin/get-skin-data-from-user'
 import { getSkinHeadBase64 } from '@/actions/server/skin/get-skin-head-base64'
 import { getSkinType } from '@/actions/server/skin/get-skin-type'
-import { fetchFromServer } from '@/actions/server/utils/fetch-from-server'
+import { fetchBlobFromServer } from '@/actions/server/utils/fetch-blob-from-server'
 import type { Skin } from '@/db/schema'
+import { validateNameMC } from '@/lib/utils'
 
 export async function getSkinData(
   input: File | string,
 ): Promise<Omit<Skin, 'userId' | 'skinUrl'>> {
   const now = new Date()
+
   const isFile = input instanceof File
-  const isUrl = z.url().safeParse(input).success
+  const isUrl = z
+    .url({
+      protocol: /^https?$/,
+    })
+    .safeParse(input).success
+  const isNameMC = validateNameMC(input)
+
+  if (isNameMC) {
+    if (isNameMC.type === 'skin') {
+      const blob = await fetchBlobFromServer(isNameMC.url)
+      const base64 = await getSkinBase64FromFile(blob)
+      const skinType = await getSkinType(base64)
+      const headBase64 = await getSkinHeadBase64(base64)
+
+      return {
+        base64,
+        createdAt: now,
+        headBase64,
+        id: crypto.randomUUID(),
+        name: 'Unnamed skin',
+        skinType,
+        uuid: null,
+      }
+    }
+
+    const { username } = isNameMC
+    const { skinBlob, skinType, name, uuid } =
+      await getSkinDataFromUser(username)
+
+    const base64 = await getSkinBase64FromFile(skinBlob)
+    const headBase64 = await getSkinHeadBase64(base64)
+
+    return {
+      base64,
+      createdAt: now,
+      headBase64,
+      id: crypto.randomUUID(),
+      name,
+      skinType,
+      uuid,
+    }
+  }
 
   if (isFile) {
     const base64 = await getSkinBase64FromFile(input)
@@ -29,14 +72,8 @@ export async function getSkinData(
   }
 
   if (isUrl) {
-    const res = await fetchFromServer(input)
-
-    if (!res.ok) {
-      throw new Error('Failed to fetch skin from URL')
-    }
-
-    const buffer = await res.blob()
-    const base64 = await getSkinBase64FromFile(buffer)
+    const blob = await fetchBlobFromServer(input)
+    const base64 = await getSkinBase64FromFile(blob)
     const skinType = await getSkinType(base64)
     const headBase64 = await getSkinHeadBase64(base64)
 
