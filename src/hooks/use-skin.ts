@@ -191,6 +191,7 @@ function useSkin() {
       name: '',
       skinType: 'CLASSIC',
       skinUrl: '',
+      source: 'URL',
       userId: '',
       uuid: '',
     }
