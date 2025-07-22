@@ -33,6 +33,7 @@ export async function getSkinData(
         id: crypto.randomUUID(),
         name: 'Unnamed skin',
         skinType,
+        source: 'NAME_MC',
         uuid: null,
       }
     }
@@ -51,6 +52,7 @@ export async function getSkinData(
       id: crypto.randomUUID(),
       name,
       skinType,
+      source: 'USERNAME',
       uuid,
     }
   }
@@ -67,6 +69,7 @@ export async function getSkinData(
       id: crypto.randomUUID(),
       name: 'Unnamed skin',
       skinType,
+      source: 'FILE_UPLOAD',
       uuid: null,
     }
   }
@@ -84,6 +87,7 @@ export async function getSkinData(
       id: crypto.randomUUID(),
       name: 'Unnamed skin',
       skinType,
+      source: 'URL',
       uuid: null,
     }
   }
@@ -93,6 +97,8 @@ export async function getSkinData(
   const base64 = await getSkinBase64FromFile(skinBlob)
   const headBase64 = await getSkinHeadBase64(base64)
 
+  const isUuid = z.uuid().safeParse(uuid).success
+
   return {
     base64,
     createdAt: now,
@@ -100,6 +106,7 @@ export async function getSkinData(
     id: crypto.randomUUID(),
     name,
     skinType,
+    source: isUuid ? 'UUID' : 'USERNAME',
     uuid,
   }
 }
@@ -110,7 +117,7 @@ function getSkinBase64FromFile(input: File | Blob) {
   return new Promise<string>((resolve, reject) => {
     reader.onload = () => {
       const base64 = reader.result as string
-      resolve(base64)
+      resolve(base64.split(',')[1])
     }
 
     reader.onerror = () => {
