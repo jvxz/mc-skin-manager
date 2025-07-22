@@ -29,6 +29,7 @@ export async function getUserMojangData() {
   const uuid = await profile.getUUID()
 
   return {
+    accessToken: accountData[0].mojangAccessToken,
     authenticated: profile.authenticated,
     cape,
     name,
