@@ -34,7 +34,6 @@ function useSkin() {
   const [localSkins, setLocalSkins] = useAtom(localSkinsAtom)
 
   const { data: userSkins, refetch: _refetchSkins } = useQuery({
-    enabled: !!sessionData?.user,
     queryFn: () => getUserSkins(),
     queryKey: [GET_SKINS_KEY],
   })
@@ -75,7 +74,12 @@ function useSkin() {
       // context for onError
       return { previousSkins }
     },
-    onSettled: () => refetchSkins(),
+    onSuccess: skin => {
+      refetchSkins()
+      if (skin && currentSkin?.id === skin?.id) {
+        setCurrentSkin(skin)
+      }
+    },
   })
 
   const { mutate: renameSkin } = useMutation({
@@ -98,6 +102,7 @@ function useSkin() {
     },
     mutationKey: [RENAME_SKIN_KEY],
     onError: err => {
+      refetchSkins()
       handleQueryError(err)
     },
     onMutate: async ({ skin, name }) => {
