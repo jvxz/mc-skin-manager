@@ -1,6 +1,15 @@
-import { IconBoxModel, IconCursorText, IconTrash } from '@tabler/icons-react'
+import {
+  IconBoxModel,
+  IconBrandMinecraft,
+  IconCopy,
+  IconCursorText,
+  IconTrash,
+} from '@tabler/icons-react'
+import { useQuery } from '@tanstack/react-query'
 import { useSetAtom } from 'jotai'
 import Image from 'next/image'
+import { toast } from 'sonner'
+import { getUserMojangData } from '@/actions/server/user/get-user-mojang-data'
 import { currentSkinAtom } from '@/components/skin/viewer'
 import { buttonVariants } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -23,8 +32,13 @@ import { staticStyles } from '@/lib/styles'
 import { cn, formatDate, timeAgo } from '@/lib/utils'
 
 function SkinListCard({ skin, className }: { skin: Skin; className?: string }) {
-  const { deleteSkin } = useSkin()
+  const { deleteSkin, applySkin, isMutating } = useSkin()
   const setSkin = useSetAtom(currentSkinAtom)
+
+  const { data: isBound } = useQuery({
+    queryFn: () => getUserMojangData(),
+    queryKey: ['user-is-bound'],
+  })
 
   if (skin.id === 'pending')
     return (
@@ -96,10 +110,30 @@ function SkinListCard({ skin, className }: { skin: Skin; className?: string }) {
           <IconTrash />
           Delete
         </ContextMenuItem>
+        {isBound && (
+          <>
+            <ContextMenuSeparator />
+
+            <ContextMenuItem
+              disabled={isMutating}
+              onClick={() => applySkin(skin)}>
+              <IconBrandMinecraft />
+              Apply to Minecraft
+            </ContextMenuItem>
+          </>
+        )}
         <ContextMenuSeparator />
-        <ContextMenuItem>Copy URL</ContextMenuItem>
-        <ContextMenuItem>Copy UUID</ContextMenuItem>
-        <ContextMenuItem>Copy Name</ContextMenuItem>
+        <ContextMenuItem
+          disabled={isMutating}
+          onClick={() => {
+            navigator.clipboard.writeText(skin.skinUrl)
+            toast.success('Skin URL copied to clipboard')
+          }}>
+          <IconCopy />
+          Copy URL
+        </ContextMenuItem>
+        <ContextMenuItem disabled={isMutating}>Copy UUID</ContextMenuItem>
+        <ContextMenuItem disabled={isMutating}>Copy Name</ContextMenuItem>
       </ContextMenuContent>
     </ContextMenu>
   )
