@@ -12,6 +12,8 @@ import {
 import { DirectionalLight } from 'three'
 import type { Skin } from '@/db/schema'
 
+const SIZE_MULTIPLIER = 6.5
+
 export const currentSkinAtom = atom<Skin | null>(null)
 
 class WalkAnimation extends PlayerAnimation {
@@ -79,9 +81,9 @@ function SkinViewerCanvas() {
           model,
         }}
         className="size-full data-[active=false]:hidden"
-        width={576}
+        width={64 * SIZE_MULTIPLIER}
         onReady={handleReady}
-        height={704}
+        height={64 * SIZE_MULTIPLIER * 1.375}
         skinUrl={skin?.base64 ?? ''}
       />
       <div
