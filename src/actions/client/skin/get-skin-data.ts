@@ -110,7 +110,7 @@ function getSkinBase64FromFile(input: File | Blob) {
   return new Promise<string>((resolve, reject) => {
     reader.onload = () => {
       const base64 = reader.result as string
-      resolve(base64)
+      resolve(base64.split(',')[1])
     }
 
     reader.onerror = () => {

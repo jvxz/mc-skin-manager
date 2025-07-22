@@ -84,7 +84,7 @@ function SkinViewerCanvas() {
         width={64 * SIZE_MULTIPLIER}
         onReady={handleReady}
         height={64 * SIZE_MULTIPLIER * 1.375}
-        skinUrl={skin?.base64 ?? ''}
+        skinUrl={`data:image/png;base64,${skin?.base64}`}
       />
       <div
         className="-z-10 absolute inset-0 block rounded bg-repeat opacity-80 dark:hidden"
