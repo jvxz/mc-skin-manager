@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  useMutation,
+  useMutationState,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query'
 import { useAtom } from 'jotai'
 import { toast } from 'sonner'
 import { getSkinData } from '@/actions/client/skin/get-skin-data'
@@ -21,7 +26,7 @@ const MIGRATE_LOCAL_SKINS_KEY = 'migrate-local-skins'
 
 function useSkin() {
   const qc = useQueryClient()
-  const { data: sessionData, isPending: isLoadingSession } = useSession()
+  const { data: sessionData } = useSession()
 
   const [currentSkin, setCurrentSkin] = useAtom(currentSkinAtom)
   const [localSkins, setLocalSkins] = useAtom(localSkinsAtom)
@@ -32,7 +37,7 @@ function useSkin() {
     queryKey: [GET_SKINS_KEY],
   })
 
-  const { mutate: postSkin, isPending: isPosting } = useMutation({
+  const { mutate: postSkin } = useMutation({
     mutationFn: async (input: File | string) => {
       const skin = await getSkinData(input)
 
@@ -71,7 +76,7 @@ function useSkin() {
     onSettled: () => refetchSkins(),
   })
 
-  const { mutate: deleteSkin, isPending: isDeleting } = useMutation({
+  const { mutate: deleteSkin } = useMutation({
     mutationFn: async (skin: Skin) => {
       if (!sessionData?.user) {
         return setLocalSkins(prev => prev.filter(s => s.id !== skin.id))
@@ -101,7 +106,7 @@ function useSkin() {
     onSettled: () => refetchSkins(),
   })
 
-  const { mutate: applySkin, isPending: isApplying } = useMutation({
+  const { mutate: applySkin } = useMutation({
     mutationFn: async (skin: Skin) =>
       toast.promise(applySkinToMc(skin), {
         error: 'Failed to apply skin',
@@ -111,7 +116,7 @@ function useSkin() {
     mutationKey: [APPLY_SKIN_KEY],
   })
 
-  const { mutate: migrateLocalSkins, isPending: isMigrating } = useMutation({
+  const { mutate: migrateLocalSkins } = useMutation({
     mutationFn: async () => {
       await migrateLocalSkinsToUser(localSkins)
       await refetchSkins()
@@ -188,8 +193,11 @@ function useSkin() {
     }
   }
 
-  const isMutating =
-    isPosting || isDeleting || isLoadingSession || isMigrating || isApplying
+  const mutations = useMutationState({
+    filters: { status: 'pending' },
+  })
+
+  const isMutating = mutations.length > 0
 
   const skins = sessionData?.user ? userSkins : localSkins
 
