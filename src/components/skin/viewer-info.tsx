@@ -51,7 +51,7 @@ function SkinViewerInfo() {
           <div className="flex items-center gap-2 text-sm">
             <p className="text-muted-foreground">Imported from</p>
             <div className="flex-1 border-b border-dashed"></div>
-            <p>TODO</p>
+            <p>{formatSource(skin.source)}</p>
           </div>
 
           <div className="my-6" />
@@ -119,6 +119,23 @@ function SkinNameEditor({ skin }: { skin: Skin }) {
       <Badge variant="outline">{formatSkinType(skin.skinType)}</Badge>
     </CardTitle>
   )
+}
+
+function formatSource(source: Skin['source']) {
+  switch (source) {
+    case 'NAME_MC':
+      return 'NameMC'
+    case 'USERNAME':
+      return 'Username'
+    case 'UUID':
+      return 'UUID'
+    case 'URL':
+      return 'URL'
+    case 'FILE_UPLOAD':
+      return 'File upload'
+    default:
+      return 'Unknown'
+  }
 }
 
 export { SkinViewerInfo }
