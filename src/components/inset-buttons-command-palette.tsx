@@ -1,5 +1,7 @@
 'use client'
 import { IconBug, IconSettings, IconUser } from '@tabler/icons-react'
+import { useSetAtom } from 'jotai'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import {
@@ -11,6 +13,8 @@ import {
   CommandList,
   CommandSeparator,
 } from '@/components/ui/command'
+import { useSkin } from '@/hooks/use-skin'
+import { currentSkinAtom } from './skin/viewer-canvas'
 import { Button } from './ui/button'
 import { Logo } from './ui/icons/logo'
 
@@ -56,14 +60,40 @@ function InsetButtonsCommandPalette() {
             </CommandItem>
           </CommandGroup>
           <CommandSeparator />
-          <CommandGroup heading="Skins">
-            <CommandItem>
-              <span>Skin 1</span>
-            </CommandItem>
-          </CommandGroup>
+          <CommandGroupSkins setOpen={setOpen} />
         </CommandList>
       </CommandDialog>
     </>
+  )
+}
+
+function CommandGroupSkins({ setOpen }: { setOpen: (open: boolean) => void }) {
+  const router = useRouter()
+  const { skins } = useSkin()
+  const setSkin = useSetAtom(currentSkinAtom)
+
+  return (
+    <CommandGroup heading="Skins">
+      {skins?.map((skin, index) => (
+        <CommandItem
+          onSelect={() => {
+            router.push('/')
+            setSkin(skin)
+            setOpen(false)
+          }}
+          key={skin.id}
+          value={`${skin.id}-${index}-${skin.name}`}>
+          <Image
+            src={`data:image/png;base64,${skin.headBase64}`}
+            alt={skin.name}
+            width={16}
+            height={16}
+            className="rounded-sm [image-rendering:pixelated]"
+          />
+          <span>{skin.name}</span>
+        </CommandItem>
+      ))}
+    </CommandGroup>
   )
 }
 
