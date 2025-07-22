@@ -1,4 +1,5 @@
 'use client'
+import { useHotkeys } from '@mantine/hooks'
 import { IconBug, IconSettings, IconUser } from '@tabler/icons-react'
 import { useSetAtom } from 'jotai'
 import Image from 'next/image'
@@ -21,6 +22,8 @@ import { Logo } from './ui/icons/logo'
 function InsetButtonsCommandPalette() {
   const router = useRouter()
   const [open, setOpen] = useState(false)
+
+  useHotkeys([['mod+k', () => setOpen(true)]])
 
   const handleSelect = (fn: () => void) => {
     fn()

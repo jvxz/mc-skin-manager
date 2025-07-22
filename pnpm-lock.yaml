@@ -11,6 +11,9 @@ importers:
       '@biomejs/biome':
         specifier: ^2.1.2
         version: 2.1.2
+      '@mantine/hooks':
+        specifier: ^8.2.1
+        version: 8.2.1(react@19.1.0)
       '@neondatabase/serverless':
         specifier: ^1.0.1
         version: 1.0.1
@@ -712,6 +715,11 @@ packages:
 
   '@levischuck/tiny-cbor@0.2.11':
     resolution: {integrity: sha512-llBRm4dT4Z89aRsm6u2oEZ8tfwL/2l6BwpZ7JcyieouniDECM5AqNgr/y08zalEIvW3RSK4upYyybDcmjXqAow==}
+
+  '@mantine/hooks@8.2.1':
+    resolution: {integrity: sha512-gnRDk5FXCD9fa0AjlAj9otCsZL9QJzVrpYZk9KjOEoP5XR1TEE2F9/rGbajh1UVjPnD3jUlNLRJMH0YHTlA65A==}
+    peerDependencies:
+      react: ^18.x || ^19.x
 
   '@msgpackr-extract/msgpackr-extract-darwin-arm64@3.0.3':
     resolution: {integrity: sha512-QZHtlVgbAdy2zAqNA9Gu1UpIuI8Xvsd1v8ic6B2pZmeFnFcMWiPLfWXh7TVw4eGEZ/C9TH281KwhVoeQUKbyjw==}
@@ -3098,6 +3106,10 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.5.0
 
   '@levischuck/tiny-cbor@0.2.11': {}
+
+  '@mantine/hooks@8.2.1(react@19.1.0)':
+    dependencies:
+      react: 19.1.0
 
   '@msgpackr-extract/msgpackr-extract-darwin-arm64@3.0.3':
     optional: true
