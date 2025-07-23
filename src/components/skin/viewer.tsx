@@ -4,7 +4,7 @@ import { SkinViewerInfo } from './viewer-info'
 
 function SkinViewer() {
   return (
-    <div className="mx-auto flex h-fit w-fit flex-col gap-6 xl:flex-row ">
+    <div className="mx-auto flex h-fit w-fit flex-col gap-6 xl:flex-row 2xl:w-[975px]">
       <div className="relative shrink-0 self-center">
         <SkinViewerCanvas />
       </div>
