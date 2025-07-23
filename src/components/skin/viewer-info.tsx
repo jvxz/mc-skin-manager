@@ -9,6 +9,7 @@ import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Input } from '../ui/input'
+import { Skeleton } from '../ui/skeleton'
 import { currentSkinAtom } from './viewer-canvas'
 
 function SkinViewerInfo() {
@@ -87,13 +88,17 @@ function SkinViewerInfo() {
         <div className="flex items-center gap-2 text-sm">
           <p className="text-muted-foreground">Skin URL</p>
           <div className="flex-1 border-b border-dashed"></div>
-          <Link
-            title={skin.skinUrl}
-            className="w-xs truncate break-all font-mono text-xs hover:underline"
-            href={skin.skinUrl}
-            target="_blank">
-            {skin.skinUrl}
-          </Link>
+          {skin.skinUrl ? (
+            <Link
+              title={skin.skinUrl}
+              className="w-56 truncate break-all font-mono text-xs hover:underline"
+              href={skin.skinUrl}
+              target="_blank">
+              {skin.skinUrl}
+            </Link>
+          ) : (
+            <Skeleton className="h-4 w-56 rounded-sm" />
+          )}
         </div>
       </CardContent>
     </Card>
