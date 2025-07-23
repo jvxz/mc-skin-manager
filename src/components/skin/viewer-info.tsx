@@ -1,6 +1,7 @@
 'use client'
 import { IconPencil } from '@tabler/icons-react'
 import { useAtomValue } from 'jotai'
+import Link from 'next/link'
 import { useState } from 'react'
 import type { Skin } from '@/db/schema'
 import { useSkin } from '@/hooks/use-skin'
@@ -56,6 +57,18 @@ function SkinViewerInfo() {
 
           <div className="my-6" />
 
+          {skin.originalName && (
+            <div className="flex items-center gap-2 text-sm">
+              <p className="text-muted-foreground">Player name</p>
+              <div className="flex-1 border-b border-dashed"></div>
+              <p
+                title={skin.originalName}
+                className="truncate break-all font-mono text-xs">
+                {skin.originalName}
+              </p>
+            </div>
+          )}
+
           {skin.uuid && (
             <div className="flex items-center gap-2 text-sm">
               <p className="text-muted-foreground">Player UUID</p>
@@ -67,6 +80,20 @@ function SkinViewerInfo() {
               </p>
             </div>
           )}
+        </div>
+
+        <div className="my-6" />
+
+        <div className="flex items-center gap-2 text-sm">
+          <p className="text-muted-foreground">Skin URL</p>
+          <div className="flex-1 border-b border-dashed"></div>
+          <Link
+            title={skin.skinUrl}
+            className="w-xs truncate break-all font-mono text-xs hover:underline"
+            href={skin.skinUrl}
+            target="_blank">
+            {skin.skinUrl}
+          </Link>
         </div>
       </CardContent>
     </Card>
