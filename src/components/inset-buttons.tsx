@@ -18,7 +18,7 @@ function InsetButtons() {
           </Link>
         </Button>
         <Button variant="ghost" className="size-16" asChild>
-          <Link href="/settings">
+          <Link href="/settings/account">
             <IconSettings className="!size-8" />
           </Link>
         </Button>
