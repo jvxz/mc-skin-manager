@@ -49,11 +49,30 @@ const link = `https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize?
 )}&response_mode=query&scope=${encodeURI('openid+profile+email+User.Read+XboxLive.SignIn')}`
 
 function SettingsLinkMicrosoftActions() {
-  const { mojangData, unlinkMicrosoftAccount, isLoading, isMutating } =
-    useUser()
+  const {
+    mojangData,
+    authData,
+    unlinkMicrosoftAccount,
+    isLoading,
+    isMutating,
+  } = useUser()
 
   if (isLoading) {
     return <Skeleton className="h-8 w-42" />
+  }
+
+  if (!authData?.user) {
+    return (
+      <Button
+        disabled
+        className="!glow-lime-500 border border-[#74b03c] bg-[#74b03c]/85 text-[#74b03c]-foreground opacity-50 hover:bg-[#74b03c]/90 focus-visible:border-[#74b03c]/50 active:bg-[#74b03c]/85"
+        asChild>
+        <Link href={link}>
+          <MdiMicrosoft className="!size-4" />
+          Sign in with Microsoft
+        </Link>
+      </Button>
+    )
   }
 
   if (!mojangData) {
