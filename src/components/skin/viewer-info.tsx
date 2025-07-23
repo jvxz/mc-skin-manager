@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import type { Skin } from '@/db/schema'
 import { useSkin } from '@/hooks/use-skin'
+import { useUser } from '@/hooks/use-user'
 import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
@@ -13,6 +14,7 @@ import { Skeleton } from '../ui/skeleton'
 import { currentSkinAtom } from './viewer-canvas'
 
 function SkinViewerInfo() {
+  const { authData } = useUser()
   const skin = useAtomValue(currentSkinAtom)
 
   if (!skin) {
@@ -81,23 +83,26 @@ function SkinViewerInfo() {
               </p>
             </div>
           )}
-        </div>
 
-        <div className="my-6" />
-
-        <div className="flex items-center gap-2 text-sm">
-          <p className="text-muted-foreground">Skin URL</p>
-          <div className="flex-1 border-b border-dashed"></div>
-          {skin.skinUrl ? (
-            <Link
-              title={skin.skinUrl}
-              className="w-56 truncate break-all font-mono text-xs hover:underline"
-              href={skin.skinUrl}
-              target="_blank">
-              {skin.skinUrl}
-            </Link>
-          ) : (
-            <Skeleton className="h-4 w-56 rounded-sm" />
+          {authData?.user && (
+            <>
+              <div className="my-6" />
+              <div className="flex items-center gap-2 text-sm">
+                <p className="text-muted-foreground">Skin URL</p>
+                <div className="flex-1 border-b border-dashed"></div>
+                {skin.skinUrl ? (
+                  <Link
+                    title={skin.skinUrl}
+                    className="w-56 truncate break-all font-mono text-xs hover:underline"
+                    href={skin.skinUrl}
+                    target="_blank">
+                    {skin.skinUrl}
+                  </Link>
+                ) : (
+                  <Skeleton className="h-4 w-56 rounded-sm" />
+                )}
+              </div>
+            </>
           )}
         </div>
       </CardContent>
