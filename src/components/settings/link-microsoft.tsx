@@ -59,7 +59,7 @@ function SettingsLinkMicrosoftActions() {
   if (!mojangData) {
     return (
       <Button
-        className="fade-in !glow-lime-500 animate-in border border-[#74b03c] bg-[#74b03c]/85 text-[#74b03c]-foreground hover:bg-[#74b03c]/90 focus-visible:border-[#74b03c]/50 active:bg-[#74b03c]/85"
+        className="!glow-lime-500 border border-[#74b03c] bg-[#74b03c]/85 text-[#74b03c]-foreground hover:bg-[#74b03c]/90 focus-visible:border-[#74b03c]/50 active:bg-[#74b03c]/85"
         asChild>
         <Link href={link}>
           <MdiMicrosoft className="!size-4" />
@@ -70,7 +70,7 @@ function SettingsLinkMicrosoftActions() {
   }
 
   return (
-    <div className="fade-in flex animate-in items-center gap-3">
+    <div className="flex items-center gap-3">
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button
