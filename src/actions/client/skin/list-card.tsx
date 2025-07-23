@@ -1,13 +1,13 @@
 import {
   IconBoxModel,
   IconBrandMinecraft,
-  IconCopy,
-  IconCursorText,
+  IconExternalLink,
   IconTrash,
 } from '@tabler/icons-react'
 import { useQuery } from '@tanstack/react-query'
 import { useSetAtom } from 'jotai'
 import Image from 'next/image'
+import Link from 'next/link'
 import { toast } from 'sonner'
 import { getUserMojangData } from '@/actions/server/user/get-user-mojang-data'
 import { currentSkinAtom } from '@/components/skin/viewer-canvas'
@@ -102,10 +102,6 @@ function SkinListCard({ skin, className }: { skin: Skin; className?: string }) {
           <IconBoxModel />
           Apply
         </ContextMenuItem>
-        <ContextMenuItem>
-          <IconCursorText />
-          Rename
-        </ContextMenuItem>
         <ContextMenuItem variant="destructive" onClick={() => deleteSkin(skin)}>
           <IconTrash />
           Delete
@@ -113,7 +109,6 @@ function SkinListCard({ skin, className }: { skin: Skin; className?: string }) {
         {isBound && (
           <>
             <ContextMenuSeparator />
-
             <ContextMenuItem
               disabled={isMutating}
               onClick={() => applySkin(skin)}>
@@ -129,11 +124,24 @@ function SkinListCard({ skin, className }: { skin: Skin; className?: string }) {
             navigator.clipboard.writeText(skin.skinUrl)
             toast.success('Skin URL copied to clipboard')
           }}>
-          <IconCopy />
           Copy URL
         </ContextMenuItem>
-        <ContextMenuItem disabled={isMutating}>Copy UUID</ContextMenuItem>
-        <ContextMenuItem disabled={isMutating}>Copy Name</ContextMenuItem>
+        {skin.originalName && (
+          <>
+            <ContextMenuItem disabled={isMutating}>Copy UUID</ContextMenuItem>
+            <ContextMenuItem disabled={isMutating}>Copy Name</ContextMenuItem>
+            <ContextMenuSeparator />
+            <ContextMenuItem asChild disabled={isMutating}>
+              <Link
+                className="flex items-center gap-2"
+                href={`https://namemc.com/profile/${skin.originalName}`}
+                target="_blank">
+                <IconExternalLink />
+                View user on NameMC
+              </Link>
+            </ContextMenuItem>
+          </>
+        )}
       </ContextMenuContent>
     </ContextMenu>
   )
