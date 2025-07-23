@@ -75,9 +75,11 @@ function CommandGroupSkins({ setOpen }: { setOpen: (open: boolean) => void }) {
   const { skins } = useSkin()
   const setSkin = useSetAtom(currentSkinAtom)
 
+  if (!skins) return null
+
   return (
     <CommandGroup heading="Skins">
-      {skins?.map((skin, index) => (
+      {skins.map((skin, index) => (
         <CommandItem
           onSelect={() => {
             router.push('/')
