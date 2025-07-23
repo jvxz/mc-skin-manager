@@ -48,12 +48,12 @@ function SkinViewerInfo() {
           <div className="flex items-center gap-2 text-sm">
             <p className="text-muted-foreground">Created</p>
             <div className="flex-1 border-b border-dashed"></div>
-            <p>{formatDate(skin.createdAt)}</p>
+            <p className="font-mono text-xs">{formatDate(skin.createdAt)}</p>
           </div>
           <div className="flex items-center gap-2 text-sm">
             <p className="text-muted-foreground">Imported from</p>
             <div className="flex-1 border-b border-dashed"></div>
-            <p>{formatSource(skin.source)}</p>
+            <p className="font-mono text-xs">{formatSource(skin.source)}</p>
           </div>
 
           <div className="my-6" />
