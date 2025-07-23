@@ -1,9 +1,9 @@
 'use client'
-
 import { saveAs } from 'file-saver'
 import { useAtomValue } from 'jotai'
 import { motion, useAnimation } from 'motion/react'
 import { useSkin } from '@/hooks/use-skin'
+import { useUser } from '@/hooks/use-user'
 import { Button } from '../ui/button'
 import { MdiMinecraft } from '../ui/icons/minecraft'
 import { currentSkinAtom } from './viewer-canvas'
@@ -38,6 +38,7 @@ function SkinViewerActions() {
 
 function SkinViewerApplyButton() {
   const { applySkin, isMutating } = useSkin()
+  const { mojangData } = useUser()
   const skin = useAtomValue(currentSkinAtom)
   const controls = useAnimation()
 
@@ -65,7 +66,7 @@ function SkinViewerApplyButton() {
 
   return (
     <Button
-      disabled={!skin}
+      disabled={!skin || !mojangData}
       isLoading={isMutating}
       onMouseDown={handleHoldStart}
       onMouseUp={handleHoldEnd}
