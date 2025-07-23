@@ -19,8 +19,6 @@ import { DirectionalLight } from 'three'
 import type { Skin } from '@/db/schema'
 import { Button } from '../ui/button'
 
-const SIZE_MULTIPLIER = 6.5
-
 export const currentSkinAtom = atom<Skin | null>(null)
 
 class WalkAnimation extends PlayerAnimation {
@@ -102,12 +100,12 @@ function SkinViewerCanvas() {
           model,
         }}
         className="size-full data-[active=false]:hidden"
-        width={64 * SIZE_MULTIPLIER}
+        width={64 * 8}
         onReady={handleReady}
-        height={64 * SIZE_MULTIPLIER * 1.375}
+        height={64 * 10}
         skinUrl={`data:image/png;base64,${skin?.base64}`}
       />
-      <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-80 hover:opacity-100 duration-150">
+      <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-80 duration-150 hover:opacity-100">
         <Button size="icon" variant="ghost" onClick={handleCameraReset}>
           <IconRefresh />
         </Button>

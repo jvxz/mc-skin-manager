@@ -38,7 +38,7 @@ function SkinViewerInfo() {
   }
 
   return (
-    <Card className="w-full">
+    <Card className="h-63 w-full">
       <CardHeader>
         <SkinNameEditor skin={skin} />
       </CardHeader>
