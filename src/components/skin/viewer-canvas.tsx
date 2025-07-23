@@ -1,16 +1,23 @@
 'use client'
+import {
+  IconPlayerPauseFilled,
+  IconPlayerPlayFilled,
+  IconRefresh,
+} from '@tabler/icons-react'
 import { atom, useAtomValue } from 'jotai'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import ReactSkinview3d, {
   type ViewerReadyCallbackOptions,
 } from 'react-skinview3d'
 import {
   PlayerAnimation,
   type PlayerObject,
+  type SkinViewer,
   type SkinViewerOptions,
 } from 'skinview3d'
 import { DirectionalLight } from 'three'
 import type { Skin } from '@/db/schema'
+import { Button } from '../ui/button'
 
 const SIZE_MULTIPLIER = 6.5
 
@@ -32,6 +39,8 @@ class WalkAnimation extends PlayerAnimation {
 }
 
 function SkinViewerCanvas() {
+  const viewerRef = useRef<SkinViewer | null>(null)
+  const [isPaused, setIsPaused] = useState(false)
   const skin = useAtomValue(currentSkinAtom)
 
   const model = useMemo((): SkinViewerOptions['model'] => {
@@ -43,6 +52,7 @@ function SkinViewerCanvas() {
   }, [skin])
 
   const handleReady = useCallback(({ viewer }: ViewerReadyCallbackOptions) => {
+    viewerRef.current = viewer
     viewer.controls.enableZoom = false
 
     // all of these three.js properties (except for the camera position)
@@ -71,6 +81,17 @@ function SkinViewerCanvas() {
     // viewer
   }, [])
 
+  const handleCameraReset = useCallback(() => {
+    viewerRef.current?.camera.position.set(-25, 20, 48)
+  }, [])
+
+  const handleAnimationPause = useCallback(() => {
+    if (!viewerRef.current || !viewerRef.current.animation) return
+
+    viewerRef.current.animation.paused = !isPaused
+    setIsPaused(!isPaused)
+  }, [isPaused])
+
   return (
     <div className="relative size-full">
       <ReactSkinview3d
@@ -86,6 +107,14 @@ function SkinViewerCanvas() {
         height={64 * SIZE_MULTIPLIER * 1.375}
         skinUrl={`data:image/png;base64,${skin?.base64}`}
       />
+      <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-80 hover:opacity-100 duration-150">
+        <Button size="icon" variant="ghost" onClick={handleCameraReset}>
+          <IconRefresh />
+        </Button>
+        <Button size="icon" variant="ghost" onClick={handleAnimationPause}>
+          {isPaused ? <IconPlayerPlayFilled /> : <IconPlayerPauseFilled />}
+        </Button>
+      </div>
       <div
         className="-z-10 absolute inset-0 block rounded bg-repeat opacity-80 dark:hidden"
         style={{
