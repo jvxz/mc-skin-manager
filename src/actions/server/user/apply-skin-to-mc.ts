@@ -1,5 +1,4 @@
 'use server'
-import { MojangAuthProfile } from 'minecraft-api-wrapper'
 import type { Skin } from '@/db/schema'
 import { getAuthData } from '../utils/get-auth-data'
 import { getUserMojangData } from './get-user-mojang-data'
@@ -8,42 +7,40 @@ export async function applySkinToMc(skin: Skin) {
   const authData = await getAuthData()
 
   if (!authData) {
-    throw new Error(
-      'Unauthorized',
-      // {
-      // cause: 'Unauthorized user attempted to apply skin to Minecraft',
-      // }
-    )
+    throw new Error('Unauthorized')
   }
 
   const mojangData = await getUserMojangData()
 
   if (!mojangData) {
-    throw new Error(
-      'User not bound to Microsoft account',
-      // {
-      // cause:
-      // 'Authorized user attempted to apply skin to Minecraft without a bound Microsoft account',
-      // }
-    )
+    throw new Error('User not bound to Microsoft account')
   }
 
-  const profile = new MojangAuthProfile(mojangData.accessToken)
+  const body = new FormData()
 
-  const res = await profile.changeSkin(
-    skin.skinUrl,
-    skin.skinType === 'SLIM' ? 'slim' : 'classic',
+  body.append('variant', skin.skinType)
+
+  const imgRes = await fetch(skin.skinUrl)
+  const imgBlob = await imgRes.blob()
+
+  body.append('file', imgBlob, 'skin.png')
+
+  const res = await fetch(
+    'https://api.minecraftservices.com/minecraft/profile/skins',
+    {
+      body,
+      headers: {
+        Authorization: `Bearer ${mojangData.accessToken}`,
+      },
+      method: 'POST',
+    },
   )
 
-  if (res) {
-    throw new Error(
-      'Failed to apply skin',
-      // {
-      // cause:
-      // 'Authorized user with bound Microsoft account encountered an unknown error while applying skin to their Minecraft account',
-      // }
-    )
+  if (!res.ok) {
+    throw new Error('Failed to apply skin')
   }
 
-  return res
+  return {
+    success: true,
+  }
 }
