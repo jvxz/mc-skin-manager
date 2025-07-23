@@ -70,6 +70,7 @@ export const skins = pgTable('skins', {
   headBase64: text('head_base64').notNull(),
   id: text('id').primaryKey().notNull(),
   name: text('name').notNull(),
+  originalName: text('original_name'),
   skinType: text('skin_type').notNull().$type<'SLIM' | 'CLASSIC'>(),
   skinUrl: text('skin_url').notNull(),
   source: text('source')

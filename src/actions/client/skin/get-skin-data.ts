@@ -32,15 +32,16 @@ export async function getSkinData(
         headBase64,
         id: crypto.randomUUID(),
         name: 'Unnamed skin',
+        originalName: null,
         skinType,
         source: 'NAME_MC',
         uuid: null,
       }
     }
 
-    const { username } = isNameMC
-    const { skinBlob, skinType, name, uuid } =
-      await getSkinDataFromUser(username)
+    const { skinBlob, skinType, name, uuid } = await getSkinDataFromUser(
+      isNameMC.username,
+    )
 
     const base64 = await getSkinBase64FromFile(skinBlob)
     const headBase64 = await getSkinHeadBase64(base64)
@@ -51,6 +52,7 @@ export async function getSkinData(
       headBase64,
       id: crypto.randomUUID(),
       name,
+      originalName: name,
       skinType,
       source: 'USERNAME',
       uuid,
@@ -68,6 +70,7 @@ export async function getSkinData(
       headBase64,
       id: crypto.randomUUID(),
       name: 'Unnamed skin',
+      originalName: null,
       skinType,
       source: 'FILE_UPLOAD',
       uuid: null,
@@ -86,6 +89,7 @@ export async function getSkinData(
       headBase64,
       id: crypto.randomUUID(),
       name: 'Unnamed skin',
+      originalName: null,
       skinType,
       source: 'URL',
       uuid: null,
@@ -105,6 +109,7 @@ export async function getSkinData(
     headBase64,
     id: crypto.randomUUID(),
     name,
+    originalName: name,
     skinType,
     source: isUuid ? 'UUID' : 'USERNAME',
     uuid,
