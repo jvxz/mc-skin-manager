@@ -1,11 +1,11 @@
 'use client'
 
-import { IconTrash } from '@tabler/icons-react'
 import { saveAs } from 'file-saver'
 import { useAtomValue } from 'jotai'
 import { motion, useAnimation } from 'motion/react'
 import { useSkin } from '@/hooks/use-skin'
 import { Button } from '../ui/button'
+import { MdiMinecraft } from '../ui/icons/minecraft'
 import { currentSkinAtom } from './viewer-canvas'
 
 function SkinViewerActions() {
@@ -27,7 +27,7 @@ function SkinViewerActions() {
         onClick={() => skin && deleteSkin(skin)}>
         Delete
       </Button>
-      <Button variant="outline" onClick={handleDownload}>
+      <Button disabled={!skin} variant="outline" onClick={handleDownload}>
         Download
       </Button>
       <div className="flex-1" />
@@ -37,7 +37,7 @@ function SkinViewerActions() {
 }
 
 function SkinViewerApplyButton() {
-  const { applySkin } = useSkin()
+  const { applySkin, isMutating } = useSkin()
   const skin = useAtomValue(currentSkinAtom)
   const controls = useAnimation()
 
@@ -65,21 +65,23 @@ function SkinViewerApplyButton() {
 
   return (
     <Button
+      disabled={!skin}
+      isLoading={isMutating}
       onMouseDown={handleHoldStart}
       onMouseUp={handleHoldEnd}
       onMouseLeave={handleHoldEnd}
       onTouchStart={handleHoldStart}
       onTouchEnd={handleHoldEnd}
       onTouchCancel={handleHoldEnd}
-      className="relative touch-none overflow-hidden">
+      className="!glow-lime-500 relative animate-in touch-none overflow-hidden border border-[#74b03c] bg-[#74b03c]/85 text-[#74b03c]-foreground hover:bg-[#74b03c]/90 focus-visible:border-[#74b03c]/50 active:bg-[#74b03c]/85">
       <motion.div
         initial={{ width: '0%' }}
         animate={controls}
         className="absolute top-0 left-0 h-full bg-white/20"
       />
       <span className="relative z-10 flex w-full items-center justify-center gap-2">
-        <IconTrash className="h-4 w-4" />
-        Apply skin
+        <MdiMinecraft className="!size-4" />
+        Apply skin to Minecraft
       </span>
     </Button>
   )
