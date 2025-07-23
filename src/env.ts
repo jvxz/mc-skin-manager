@@ -19,6 +19,8 @@ export const env = createEnv({
     NEXT_PUBLIC_GITHUB_CLIENT_ID: process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID,
     NEXT_PUBLIC_MICROSOFT_CLIENT_ID:
       process.env.NEXT_PUBLIC_MICROSOFT_CLIENT_ID,
+    UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
+    UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
   },
   server: {
     BETTER_AUTH_SECRET: z.string().length(32),
@@ -26,5 +28,7 @@ export const env = createEnv({
     DISCORD_CLIENT_SECRET: z.string(),
     GITHUB_CLIENT_SECRET: z.string(),
     MICROSOFT_CLIENT_SECRET: z.string(),
+    UPSTASH_REDIS_REST_TOKEN: z.string(),
+    UPSTASH_REDIS_REST_URL: z.url(),
   },
 })

@@ -1,9 +1,10 @@
-import { ipAddress } from '@vercel/functions'
 import { type NextRequest, NextResponse } from 'next/server'
 import { ratelimit } from './lib/ratelimit'
 
 export async function middleware(request: NextRequest) {
-  const { success } = await ratelimit.limit(ipAddress(request) ?? '127.0.0.1')
+  const { success } = await ratelimit.limit(
+    request.headers.get('x-forwarded-for') ?? '127.0.0.1',
+  )
 
   if (!success) {
     return new Response('Too many requests', { status: 429 })

@@ -11,7 +11,7 @@ export const ratelimit = new Ratelimit({
    * "@upstash/ratelimit"
    */
   prefix: '@upstash/ratelimit',
-  redis: Redis.fromEnv(),
+  redis: Redis.fromEnv({}),
 })
 
 // Use a constant string to limit all requests with a single ratelimit
