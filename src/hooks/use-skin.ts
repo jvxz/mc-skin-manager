@@ -45,14 +45,15 @@ function useSkin() {
       removePendingSkin()
 
       if (!sessionData?.user) {
-        return setLocalSkins(prev => [
-          ...prev,
-          {
-            ...skin,
-            skinUrl: '',
-            userId: 'local',
-          },
-        ])
+        const newSkin = {
+          ...skin,
+          skinUrl: '',
+          userId: 'local',
+        }
+
+        setCurrentSkin(newSkin)
+
+        return setLocalSkins(prev => [...prev, newSkin])
       }
 
       addSkinOptimistically(skin)
