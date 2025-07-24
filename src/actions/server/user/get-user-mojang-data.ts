@@ -1,9 +1,29 @@
 'use server'
 import { eq } from 'drizzle-orm'
-import { MojangAuthProfile } from 'minecraft-api-wrapper'
+import { $fetch } from 'ofetch'
 import { db } from '@/db'
 import { schema } from '@/db/schema'
 import { getAuthData } from '../utils/get-auth-data'
+
+type MojangData = {
+  id: string
+  name: string
+  skins: [
+    {
+      id: string
+      state: 'ACTIVE' | 'INACTIVE'
+      url: string
+      textureKey: string
+      variant: 'SLIM' | 'CLASSIC'
+    },
+  ]
+  capes: {
+    id: string
+    state: 'INACTIVE' | 'ACTIVE'
+    url: string
+    alias: string
+  }[]
+}
 
 export async function getUserMojangData() {
   const authData = await getAuthData()
@@ -21,19 +41,30 @@ export async function getUserMojangData() {
     return null
   }
 
-  const profile = new MojangAuthProfile(accountData[0].mojangAccessToken)
+  const profile = await $fetch<MojangData>(
+    'https://api.minecraftservices.com/minecraft/profile',
+    {
+      headers: {
+        Authorization: `Bearer ${accountData[0].mojangAccessToken}`,
+      },
+    },
+  ).catch(async error => {
+    if (error.status === 401) {
+      await db
+        .update(schema.account)
+        .set({ mojangAccessToken: null })
+        .where(eq(schema.account.userId, authData.user.id))
+      return null
+    }
+    throw error
+  })
 
-  const skin = await profile.getActiveSkin()
-  const cape = await profile.getActiveCape()
-  const name = await profile.getName()
-  const uuid = await profile.getUUID()
+  if (!profile) {
+    return null
+  }
 
   return {
     accessToken: accountData[0].mojangAccessToken,
-    authenticated: profile.authenticated,
-    cape,
-    name,
-    skin,
-    uuid,
+    name: profile.name,
   }
 }
