@@ -194,6 +194,7 @@ function useSkin() {
       headBase64: '',
       id: 'pending',
       name: '',
+      originalName: null,
       skinType: 'CLASSIC',
       skinUrl: '',
       source: 'URL',
