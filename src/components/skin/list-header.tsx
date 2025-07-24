@@ -1,6 +1,7 @@
 'use client'
 import { IconFileImport, IconShirt } from '@tabler/icons-react'
 import { useForm } from '@tanstack/react-form'
+import { useEffect } from 'react'
 import { useSkin } from '@/hooks/use-skin'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
@@ -24,6 +25,25 @@ function SkinListHeader() {
       }
     },
   })
+
+  useEffect(() => {
+    const handlePaste = (e: ClipboardEvent) => {
+      if (!e.clipboardData) return
+      if (isMutating) return
+
+      const text = e.clipboardData.getData('text')
+      if (text) {
+        form.setFieldValue('text', text)
+        form.handleSubmit()
+      }
+    }
+
+    window.addEventListener('paste', handlePaste)
+
+    return () => {
+      window.removeEventListener('paste', handlePaste)
+    }
+  }, [form.setFieldValue, form.handleSubmit, isMutating])
 
   return (
     <form
