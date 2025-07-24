@@ -15,7 +15,7 @@ function SkinList() {
   const { skins } = useSkin()
 
   return (
-    <div className="flex w-[350px] flex-col gap-3 xl:w-[350px] 2xl:flex 2xl:w-[450px]">
+    <div className="flex flex-col gap-3">
       <SkinListHeader />
       <div className="h-full">
         {skins && (
@@ -32,7 +32,7 @@ function SkinList() {
           </ScrollArea>
         )}
         {!skins && (
-          <div className="mt-px mr-3 flex flex-col gap-3 animate-in fade-in">
+          <div className="fade-in mt-px mr-3 flex animate-in flex-col gap-3">
             {Array.from({ length: 3 }).map((_, i) => {
               return (
                 <Card
