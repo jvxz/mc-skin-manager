@@ -1,5 +1,5 @@
 import { IconLibrary, IconSettings } from '@tabler/icons-react'
-import Link from 'next/link'
+import { Link } from 'next-view-transitions'
 import { InsetButtonsAuth } from './inset-buttons-auth'
 import { InsetButtonsCommandPalette } from './inset-buttons-command-palette'
 import { Button } from './ui/button'
