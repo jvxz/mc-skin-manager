@@ -1,11 +1,13 @@
 'use client'
-import { IconDownload, IconTrash } from '@tabler/icons-react'
+import { IconDownload, IconExternalLink, IconTrash } from '@tabler/icons-react'
 import { saveAs } from 'file-saver'
 import { useAtomValue } from 'jotai'
 import { motion, useAnimation } from 'motion/react'
+import { Link } from 'next-view-transitions'
 import { useSkin } from '@/hooks/use-skin'
 import { useUser } from '@/hooks/use-user'
 import { Button } from '../ui/button'
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '../ui/hover-card'
 import { MdiMinecraft } from '../ui/icons/minecraft'
 import { currentSkinAtom } from './viewer-canvas'
 
@@ -44,7 +46,7 @@ function SkinViewerActions() {
 
 function SkinViewerApplyButton() {
   const { applySkin, isMutating } = useSkin()
-  const { mojangData } = useUser()
+  const { mojangData, authData } = useUser()
   const skin = useAtomValue(currentSkinAtom)
   const controls = useAnimation()
 
@@ -69,6 +71,41 @@ function SkinViewerApplyButton() {
       width: '0%',
     })
   }
+
+  if (!skin || !mojangData || !authData)
+    return (
+      <HoverCard>
+        <HoverCardTrigger>
+          <Button className="!glow-lime-500 pointer-events-none relative animate-in touch-none overflow-hidden border border-[#74b03c] bg-[#74b03c]/85 text-[#74b03c]-foreground opacity-50 hover:bg-[#74b03c]/90 focus-visible:border-[#74b03c]/50 active:bg-[#74b03c]/85">
+            <span className="relative z-10 flex w-full items-center justify-center gap-2">
+              <MdiMinecraft className="!size-4" />
+              Apply skin to Minecraft
+            </span>
+          </Button>
+        </HoverCardTrigger>
+        <HoverCardContent className="flex flex-col gap-4" side="top">
+          {!mojangData && authData && (
+            <>
+              <p>
+                You must be bound to a Microsoft account to apply a skin to your
+                Minecraft account.
+              </p>
+              <Button className="ml-auto w-fit" asChild>
+                <Link href="/settings/account">
+                  Bind account <IconExternalLink />
+                </Link>
+              </Button>
+            </>
+          )}
+
+          {!authData && (
+            <p>
+              You must be logged in to apply a skin to your Minecraft account.
+            </p>
+          )}
+        </HoverCardContent>
+      </HoverCard>
+    )
 
   return (
     <Button

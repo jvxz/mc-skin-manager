@@ -30,7 +30,7 @@ function HoverCardTrigger({
 function HoverCardContent({
   className,
   align = 'center',
-  sideOffset = 4,
+  sideOffset = 8,
   ...props
 }: ComponentProps<typeof HoverCardPrimitive.Content>) {
   return (
