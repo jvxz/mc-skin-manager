@@ -1,4 +1,5 @@
 'use client'
+import { IconDownload, IconTrash } from '@tabler/icons-react'
 import { saveAs } from 'file-saver'
 import { useAtomValue } from 'jotai'
 import { motion, useAnimation } from 'motion/react'
@@ -24,11 +25,16 @@ function SkinViewerActions() {
       <Button
         disabled={!skin}
         variant="destructive"
+        size="icon"
         onClick={() => skin && deleteSkin(skin)}>
-        Delete
+        <IconTrash />
       </Button>
-      <Button disabled={!skin} variant="outline" onClick={handleDownload}>
-        Download
+      <Button
+        size="icon"
+        disabled={!skin}
+        variant="outline"
+        onClick={handleDownload}>
+        <IconDownload />
       </Button>
       <div className="flex-1" />
       <SkinViewerApplyButton />

@@ -1,7 +1,7 @@
 'use client'
 import { IconPencil } from '@tabler/icons-react'
 import { useAtomValue } from 'jotai'
-import Link from 'next/link'
+import { Link } from 'next-view-transitions'
 import { useState } from 'react'
 import type { Skin } from '@/db/schema'
 import { useSkin } from '@/hooks/use-skin'
@@ -11,6 +11,7 @@ import { Button } from '../ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Input } from '../ui/input'
 import { Skeleton } from '../ui/skeleton'
+import { SkinViewerActions } from './viewer-actions'
 import { currentSkinAtom } from './viewer-canvas'
 
 function SkinViewerInfo() {
@@ -19,13 +20,15 @@ function SkinViewerInfo() {
 
   if (!skin) {
     return (
-      <Card className="w-full">
-        <CardHeader>
-          <CardTitle className="text-muted-foreground">
-            No skin selected
-          </CardTitle>
-        </CardHeader>
-      </Card>
+      <div className="h-[640px] w-108">
+        <Card className="h-full ">
+          <CardHeader className="grid h-full w-full place-items-center">
+            <CardTitle className=" text-base text-muted-foreground">
+              No skin selected
+            </CardTitle>
+          </CardHeader>
+        </Card>
+      </div>
     )
   }
 
@@ -41,72 +44,77 @@ function SkinViewerInfo() {
   }
 
   return (
-    <Card className="h-63 w-full">
-      <CardHeader>
-        <SkinNameEditor skin={skin} />
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <div className="flex items-center gap-2 text-sm">
-            <p className="text-muted-foreground">Created</p>
-            <div className="flex-1 border-b border-dashed"></div>
-            <p className="font-mono text-xs">{formatDate(skin.createdAt)}</p>
-          </div>
-          <div className="flex items-center gap-2 text-sm">
-            <p className="text-muted-foreground">Imported from</p>
-            <div className="flex-1 border-b border-dashed"></div>
-            <p className="font-mono text-xs">{formatSource(skin.source)}</p>
-          </div>
-
-          <div className="my-6" />
-
-          {skin.originalName && (
+    <div className="h-[640px] w-108">
+      <Card className="h-full ">
+        <CardHeader>
+          <SkinNameEditor skin={skin} />
+        </CardHeader>
+        <CardContent className="flex h-full flex-col gap-4">
+          <div className="space-y-2">
             <div className="flex items-center gap-2 text-sm">
-              <p className="text-muted-foreground">Player name</p>
+              <p className="text-muted-foreground">Created</p>
               <div className="flex-1 border-b border-dashed"></div>
-              <p
-                title={skin.originalName}
-                className="truncate break-all font-mono text-xs">
-                {skin.originalName}
-              </p>
+              <p className="font-mono text-xs">{formatDate(skin.createdAt)}</p>
             </div>
-          )}
-
-          {skin.uuid && (
             <div className="flex items-center gap-2 text-sm">
-              <p className="text-muted-foreground">Player UUID</p>
+              <p className="text-muted-foreground">Imported from</p>
               <div className="flex-1 border-b border-dashed"></div>
-              <p
-                title={skin.uuid}
-                className="truncate break-all font-mono text-xs">
-                {skin.uuid}
-              </p>
+              <p className="font-mono text-xs">{formatSource(skin.source)}</p>
             </div>
-          )}
 
-          {authData?.user && (
-            <>
-              <div className="my-6" />
+            <div className="my-6" />
+
+            {skin.originalName && (
               <div className="flex items-center gap-2 text-sm">
-                <p className="text-muted-foreground">Skin URL</p>
+                <p className="text-muted-foreground">Player name</p>
                 <div className="flex-1 border-b border-dashed"></div>
-                {skin.skinUrl ? (
-                  <Link
-                    title={skin.skinUrl}
-                    className="w-56 truncate break-all font-mono text-xs hover:underline"
-                    href={skin.skinUrl}
-                    target="_blank">
-                    {skin.skinUrl}
-                  </Link>
-                ) : (
-                  <Skeleton className="h-4 w-56 rounded-sm" />
-                )}
+                <p
+                  title={skin.originalName}
+                  className="truncate break-all font-mono text-xs">
+                  {skin.originalName}
+                </p>
               </div>
-            </>
-          )}
-        </div>
-      </CardContent>
-    </Card>
+            )}
+
+            {skin.uuid && (
+              <div className="flex items-center gap-2 text-sm">
+                <p className="text-muted-foreground">Player UUID</p>
+                <div className="flex-1 border-b border-dashed"></div>
+                <p
+                  title={skin.uuid}
+                  className="truncate break-all font-mono text-xs">
+                  {skin.uuid}
+                </p>
+              </div>
+            )}
+
+            {authData?.user && (
+              <>
+                <div className="my-6" />
+                <div className="flex items-center gap-2 text-sm">
+                  <p className="text-muted-foreground">Skin URL</p>
+                  <div className="flex-1 border-b border-dashed"></div>
+                  {skin.skinUrl ? (
+                    <Link
+                      title={skin.skinUrl}
+                      className="w-56 truncate break-all font-mono text-xs hover:underline"
+                      href={skin.skinUrl}
+                      target="_blank">
+                      {skin.skinUrl}
+                    </Link>
+                  ) : (
+                    <Skeleton className="h-4 w-56 rounded-sm" />
+                  )}
+                </div>
+              </>
+            )}
+          </div>
+          <div className="mt-auto">
+            <SkinViewerActions />
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   )
 }
 

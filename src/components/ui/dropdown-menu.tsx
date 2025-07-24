@@ -1,4 +1,5 @@
 'use client'
+import { IconCheck } from '@tabler/icons-react'
 import { DropdownMenu as DropdownMenuPrimitive } from 'radix-ui'
 import type { ComponentProps } from 'react'
 import { popoverStyles } from '@/lib/styles'
@@ -117,9 +118,9 @@ function DropdownMenuRadioItem({
       data-slot="dropdown-menu-radio-item"
       className={cn(popoverStyles.item, className)}
       {...props}>
-      <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
+      <span className="pointer-events-none absolute right-2 flex size-3.5 items-center justify-center">
         <DropdownMenuPrimitive.ItemIndicator>
-          <svg className="iconify ph--circle size-2 fill-current" />
+          <IconCheck className="size-2" size={16} aria-hidden="true" />
         </DropdownMenuPrimitive.ItemIndicator>
       </span>
       {children}
@@ -139,7 +140,7 @@ function DropdownMenuLabel({
       data-slot="dropdown-menu-label"
       data-inset={inset}
       className={cn(
-        'px-2 py-1 font-medium text-sm data-[inset]:pl-8',
+        'px-2 py-1 font-medium text-muted-foreground text-sm data-[inset]:pl-8',
         className,
       )}
       {...props}

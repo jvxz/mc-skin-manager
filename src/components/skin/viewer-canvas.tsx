@@ -100,12 +100,16 @@ function SkinViewerCanvas() {
           model,
         }}
         className="size-full data-[active=false]:hidden"
-        width={64 * 8}
+        width={32 * 14}
         onReady={handleReady}
         height={64 * 10}
-        skinUrl={`data:image/png;base64,${skin?.base64}`}
+        skinUrl={skin?.base64 ? `data:image/png;base64,${skin?.base64}` : ''}
       />
-      <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-80 duration-150 hover:opacity-100">
+      <div
+        className="absolute top-2 right-2 flex flex-col gap-2 opacity-80 duration-150 hover:opacity-100"
+        style={{
+          pointerEvents: !skin ? 'none' : 'auto',
+        }}>
         <Button size="icon" variant="ghost" onClick={handleCameraReset}>
           <IconRefresh />
         </Button>

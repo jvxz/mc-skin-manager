@@ -1,6 +1,6 @@
 'use client'
 import { IconCheck } from '@tabler/icons-react'
-import Link from 'next/link'
+import { Link } from 'next-view-transitions'
 import { Suspense } from 'react'
 import { env } from '@/env'
 import { useUser } from '@/hooks/use-user'
