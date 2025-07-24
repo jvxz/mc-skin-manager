@@ -19,9 +19,9 @@ function SkinViewerInfo() {
 
   if (!skin) {
     return (
-      <Card className="w-full">
+      <Card className="grid h-63 w-full place-items-center">
         <CardHeader>
-          <CardTitle className="text-muted-foreground">
+          <CardTitle className=" text-base text-muted-foreground">
             No skin selected
           </CardTitle>
         </CardHeader>
