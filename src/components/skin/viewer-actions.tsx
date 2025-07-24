@@ -32,7 +32,7 @@ function SkinViewerActions() {
       <Button
         size="icon"
         disabled={!skin}
-        variant="outline"
+        variant="soft"
         onClick={handleDownload}>
         <IconDownload />
       </Button>

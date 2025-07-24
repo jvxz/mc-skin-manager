@@ -57,7 +57,7 @@ function SkinList() {
                   // biome-ignore lint/suspicious/noArrayIndexKey: intended; loading state
                   key={i}
                   className={cn(
-                    buttonVariants({ variant: 'outline' }),
+                    buttonVariants({ variant: 'soft' }),
                     staticStyles.variant.default,
                     'pointer-events-none flex h-18 animate-pulse flex-row items-center justify-start gap-3 p-3',
                   )}

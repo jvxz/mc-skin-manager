@@ -14,9 +14,10 @@ const interactiveStyles = {
     ghost:
       'hover:bg-muted/90 active:bg-muted/80 text-muted-foreground hover:text-foreground',
     link: 'text-primary underline-offset-4 hover:underline',
-    // shadow-[0px_-1px_0px_0px_hsl(from_var(--muted-foreground)_h_s_l/0.40),0px_1px_0px_0px_hsl(from_var(--muted)_h_s_l),inset_0px_-2px_0px_0px_hsl(from_var(--muted-foreground)_h_s_l/0.035)]
     outline:
       'border-border/90 text-muted-foreground hover:text-foreground hover:bg-muted/90 active:bg-muted/80 hover:border-border active:border-border border shadow-[0px_-1px_0px_0px_hsl(from_var(--muted-foreground)_h_s_l/0.40),0px_1px_0px_0px_hsl(from_var(--muted)_h_s_l))] border-y-0 bg-transparent',
+    // shadow-[0px_-1px_0px_0px_hsl(from_var(--muted-foreground)_h_s_l/0.40),0px_1px_0px_0px_hsl(from_var(--muted)_h_s_l),inset_0px_-2px_0px_0px_hsl(from_var(--muted-foreground)_h_s_l/0.035)]
+    soft: 'border-border/90 text-muted-foreground hover:text-foreground hover:bg-muted/90 active:bg-muted/80 hover:border-border active:border-border border shadow-[0px_-1px_0px_0px_hsl(from_var(--muted-foreground)_h_s_l/0.40),0px_1px_0px_0px_hsl(from_var(--muted)_h_s_l))] border-y-0 bg-card',
   },
 }
 

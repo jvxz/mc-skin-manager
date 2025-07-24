@@ -254,7 +254,7 @@ function CodeBlockMenuTrigger({
 }: ComponentProps<typeof DropdownMenuTrigger>) {
   return (
     <DropdownMenuTrigger data-slot="code-block-menu-trigger" asChild {...props}>
-      <Button variant="outline" className="-mr-2">
+      <Button variant="soft" className="-mr-2">
         {children}
       </Button>
     </DropdownMenuTrigger>

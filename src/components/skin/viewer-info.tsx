@@ -161,7 +161,7 @@ function SkinNameEditor({ skin }: { skin: Skin }) {
         </>
       )}
       <div className="flex-1" />
-      <Badge variant="outline">{formatSkinType(skin.skinType)}</Badge>
+      <Badge variant="soft">{formatSkinType(skin.skinType)}</Badge>
     </CardTitle>
   )
 }

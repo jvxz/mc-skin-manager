@@ -17,6 +17,7 @@ const badgeVariants = cva(
         destructive: `${interactiveStyles.variant.destructive}`,
         ghost: `${interactiveStyles.variant.ghost}`,
         outline: `${interactiveStyles.variant.outline}`,
+        soft: `${interactiveStyles.variant.soft}`,
       },
     },
   },

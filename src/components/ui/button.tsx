@@ -26,6 +26,7 @@ const buttonVariants = cva(
         ghost: interactiveStyles.variant.ghost,
         link: interactiveStyles.variant.link,
         outline: interactiveStyles.variant.outline,
+        soft: interactiveStyles.variant.soft,
       },
     },
   },

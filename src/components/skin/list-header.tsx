@@ -104,7 +104,7 @@ function SkinListHeader() {
           disabled={isMutating}
           asChild
           size="icon"
-          variant="outline"
+          variant="soft"
           className="size-8">
           <label htmlFor="file">
             <form.Field name="file">
@@ -129,7 +129,7 @@ function SkinListHeader() {
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon">
+            <Button variant="soft" size="icon">
               <IconSortDescending />
             </Button>
           </DropdownMenuTrigger>

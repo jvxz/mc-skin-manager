@@ -44,7 +44,7 @@ function SkinListCard({ skin, className }: { skin: Skin; className?: string }) {
     return (
       <Card
         className={cn(
-          buttonVariants({ variant: 'outline' }),
+          buttonVariants({ variant: 'soft' }),
           staticStyles.variant.default,
           'pointer-events-none flex h-18 animate-pulse flex-row items-center justify-start gap-3 p-3',
           className,
@@ -58,7 +58,7 @@ function SkinListCard({ skin, className }: { skin: Skin; className?: string }) {
         <Card
           onClick={() => setCurrentSkin(skin)}
           className={cn(
-            buttonVariants({ variant: 'outline' }),
+            buttonVariants({ variant: 'soft' }),
             staticStyles.variant.default,
             ' flex h-18 flex-row items-center justify-start gap-3 p-3 transition duration-150',
             className,

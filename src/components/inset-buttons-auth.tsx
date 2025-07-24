@@ -52,7 +52,7 @@ function InsetButtonsAuth() {
                 },
               })
             }
-            variant="outline"
+            variant="soft"
             className="w-full">
             <IconLogout className="!size-4" />
             Sign out
