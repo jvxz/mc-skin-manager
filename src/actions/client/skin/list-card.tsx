@@ -5,7 +5,7 @@ import {
   IconTrash,
 } from '@tabler/icons-react'
 import { useQuery } from '@tanstack/react-query'
-import { useSetAtom } from 'jotai'
+import { useAtom } from 'jotai'
 import Image from 'next/image'
 import { Link } from 'next-view-transitions'
 import { toast } from 'sonner'
@@ -33,7 +33,7 @@ import { cn, formatDate, timeAgo } from '@/lib/utils'
 
 function SkinListCard({ skin, className }: { skin: Skin; className?: string }) {
   const { deleteSkin, applySkin, isMutating } = useSkin()
-  const setSkin = useSetAtom(currentSkinAtom)
+  const [currentSkin, setCurrentSkin] = useAtom(currentSkinAtom)
 
   const { data: isBound } = useQuery({
     queryFn: () => getUserMojangData(),
@@ -56,20 +56,27 @@ function SkinListCard({ skin, className }: { skin: Skin; className?: string }) {
     <ContextMenu>
       <ContextMenuTrigger asChild>
         <Card
-          onClick={() => setSkin(skin)}
+          onClick={() => setCurrentSkin(skin)}
           className={cn(
             buttonVariants({ variant: 'outline' }),
             staticStyles.variant.default,
-            'flex h-18 flex-row items-center justify-start gap-3 p-3 transition duration-150',
+            ' flex h-18 flex-row items-center justify-start gap-3 p-3 transition duration-150',
             className,
           )}>
-          <Image
-            src={`data:image/png;base64,${skin.headBase64}`}
-            alt={skin.name}
-            width={48}
-            height={48}
-            className="rounded [image-rendering:pixelated]"
-          />
+          <div className="relative">
+            <Image
+              src={`data:image/png;base64,${skin.headBase64}`}
+              alt={skin.name}
+              width={48}
+              height={48}
+              className="rounded [image-rendering:pixelated]"
+            />
+            <div
+              title="Currently active"
+              data-active={currentSkin?.id === skin.id}
+              className="-right-1 -top-1 absolute size-2.5 rounded-full border border-emerald-400 bg-emerald-400/80 transition-opacity duration-150 data-[active=false]:opacity-0 data-[active=true]:opacity-100"
+            />
+          </div>
           <div className="!h-full flex flex-1 flex-col justify-around gap-1">
             <p data-slot="skin-name" className="w-fit font-medium text-base">
               {skin.name}
@@ -98,7 +105,7 @@ function SkinListCard({ skin, className }: { skin: Skin; className?: string }) {
         </Card>
       </ContextMenuTrigger>
       <ContextMenuContent>
-        <ContextMenuItem onClick={() => setSkin(skin)}>
+        <ContextMenuItem onClick={() => setCurrentSkin(skin)}>
           <IconBoxModel />
           Apply
         </ContextMenuItem>
