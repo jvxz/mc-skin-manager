@@ -100,7 +100,7 @@ function SkinViewerCanvas() {
           model,
         }}
         className="size-full data-[active=false]:hidden"
-        width={64 * 8}
+        width={32 * 14}
         onReady={handleReady}
         height={64 * 10}
         skinUrl={skin?.base64 ? `data:image/png;base64,${skin?.base64}` : ''}

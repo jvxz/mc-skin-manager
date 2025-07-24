@@ -1,4 +1,3 @@
-import { SkinViewerActions } from './viewer-actions'
 import { SkinViewerCanvas } from './viewer-canvas'
 
 function SkinViewer() {
@@ -7,7 +6,6 @@ function SkinViewer() {
       <div className="relative shrink-0 self-center">
         <SkinViewerCanvas />
       </div>
-      <SkinViewerActions />
     </div>
   )
 }
