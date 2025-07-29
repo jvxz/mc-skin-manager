@@ -50,6 +50,7 @@
     "input-otp": "^1.4.2",
     "minecraft-api-wrapper": "^1.7.1",
     "next-themes": "^0.4.6",
+    "otio": "^0.0.1",
     "prism-react-renderer": "^2.4.1",
     "radix-ui": "^1.4.2",
     "sonner": "^2.0.6",
@@ -65,7 +66,8 @@
     "check": "tsc --noEmit",
     "deploy": "pnpm lint && pnpm check && bumpp -p",
     "deploy:force": "bumpp -p",
-    "dev": "next dev --turbopack",
+    "dev": "otio 'pnpm dev:web' -t 900 --header",
+    "dev:web": "next dev --turbopack",
     "lint": "biome lint --changed",
     "lint:all": "biome lint",
     "start": "next start"
