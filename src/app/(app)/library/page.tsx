@@ -11,16 +11,24 @@ export default function Page() {
   const { skins, isLoadingUserSkins } = useSkin()
   const skinCount = useAtomValue(persistedSkinCountAtom)
 
+  if (isLoadingUserSkins)
+    return (
+      <div className="grid w-full grid-cols-5 gap-4">
+        {Array.from({ length: skinCount }).map((_, index) => (
+          // biome-ignore lint/suspicious/noArrayIndexKey: for loading state
+          <LibrarySkinCardSkeleton key={index} />
+        ))}
+      </div>
+    )
+
+  if (skins?.length === 0)
+    return <div className="grid w-full grid-cols-5 gap-4">no skins</div>
+
   return (
     <div className="grid w-full grid-cols-5 gap-4">
-      {!isLoadingUserSkins
-        ? skins?.map(skin => {
-            return <LibrarySkinCard key={skin.id} skin={skin} />
-          })
-        : Array.from({ length: skinCount }).map((_, index) => (
-            // biome-ignore lint/suspicious/noArrayIndexKey: for loading state
-            <LibrarySkinCardSkeleton key={index} />
-          ))}
+      {skins?.map(skin => (
+        <LibrarySkinCard key={skin.id} skin={skin} />
+      ))}
     </div>
   )
 }
