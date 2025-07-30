@@ -4,8 +4,10 @@ import {
   IconLogout,
   IconUserCircle,
 } from '@tabler/icons-react'
+import { useSetAtom } from 'jotai'
 import { useState } from 'react'
 import { signIn, signOut, useSession } from '@/auth/client'
+import { persistedSkinCountAtom } from '@/stores/skin-count'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { Button } from './ui/button'
 import {
@@ -22,6 +24,7 @@ import { Spinner } from './ui/spinner'
 function InsetButtonsAuth() {
   const [isLoading, setIsLoading] = useState<'discord' | 'github' | null>(null)
   const { data: sessionData, isPending } = useSession()
+  const setSkinCount = useSetAtom(persistedSkinCountAtom)
 
   if (isPending)
     return (
@@ -48,7 +51,10 @@ function InsetButtonsAuth() {
             onClick={() =>
               signOut({
                 fetchOptions: {
-                  onSuccess: () => window.location.reload(),
+                  onSuccess: () => {
+                    window.location.reload()
+                    setSkinCount(0)
+                  },
                 },
               })
             }

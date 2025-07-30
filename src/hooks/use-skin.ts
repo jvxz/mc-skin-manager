@@ -4,7 +4,7 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query'
-import { useAtom } from 'jotai'
+import { useAtom, useSetAtom } from 'jotai'
 import { toast } from 'sonner'
 import { generateThumbnail } from '@/actions/client/skin/generate-thumbnail'
 import { getSkinData } from '@/actions/client/skin/get-skin-data'
@@ -20,6 +20,7 @@ import { currentSkinAtom } from '@/components/skin/viewer-canvas'
 import type { Skin } from '@/db/schema'
 import { handleQueryError } from '@/lib/query-client'
 import { localSkinsAtom } from '@/stores/local-skins'
+import { persistedSkinCountAtom } from '@/stores/skin-count'
 
 export const GET_SKINS_KEY = 'user-skins'
 const POST_SKIN_KEY = 'post-skin'
@@ -34,13 +35,18 @@ function useSkin() {
 
   const [currentSkin, setCurrentSkin] = useAtom(currentSkinAtom)
   const [localSkins, setLocalSkins] = useAtom(localSkinsAtom)
+  const setSkinCount = useSetAtom(persistedSkinCountAtom)
 
   const {
     data: userSkins,
     refetch: _refetchSkins,
     isLoading: isLoadingUserSkins,
   } = useQuery({
-    queryFn: () => getUserSkins(),
+    queryFn: async () => {
+      const skins = await getUserSkins()
+      setSkinCount(skins?.length ?? 0)
+      return skins
+    },
     queryKey: [GET_SKINS_KEY],
   })
 
@@ -59,6 +65,7 @@ function useSkin() {
         }
 
         setCurrentSkin(newSkin)
+        setSkinCount(prev => prev + 1)
 
         return setLocalSkins(prev => [...prev, newSkin])
       }
@@ -67,6 +74,8 @@ function useSkin() {
 
       const thumbnail = await generateThumbnail(skin)
       const thumbnailUrl = await postThumbnailToUI(thumbnail)
+
+      setSkinCount(prev => prev + 1)
 
       return postSkinAction({ ...skin, thumbnailUrl })
     },
@@ -145,10 +154,13 @@ function useSkin() {
   const { mutate: deleteSkin } = useMutation({
     mutationFn: async (skin: Skin) => {
       if (!sessionData?.user) {
+        setSkinCount(prev => prev - 1)
         return setLocalSkins(prev => prev.filter(s => s.id !== skin.id))
       }
 
-      return deleteSkinAction(skin)
+      await deleteSkinAction(skin)
+      setSkinCount(prev => prev - 1)
+      return
     },
     mutationKey: [DELETE_SKIN_KEY],
     onError: (err, _, context) => {
@@ -186,6 +198,9 @@ function useSkin() {
     mutationFn: async () => {
       await migrateLocalSkinsToUser(localSkins)
       await refetchSkins()
+
+      const newCount = localSkins.length + (userSkins?.length ?? 0)
+      setSkinCount(newCount)
     },
     mutationKey: [MIGRATE_LOCAL_SKINS_KEY],
     onError: err => {

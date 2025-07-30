@@ -6,6 +6,7 @@ import { SkinListCard } from '@/actions/client/skin/list-card'
 import { useSkin } from '@/hooks/use-skin'
 import { staticStyles } from '@/lib/styles'
 import { cn } from '@/lib/utils'
+import { persistedSkinCountAtom } from '@/stores/skin-count'
 import { buttonVariants } from '../ui/button'
 import { Card } from '../ui/card'
 import { ScrollArea } from '../ui/scroll-area'
@@ -17,6 +18,7 @@ function SkinList() {
   const scrollRef = useRef<HTMLDivElement>(null)
   const { skins, isLoadingUserSkins } = useSkin()
   const sortBy = useAtomValue(sortByAtom)
+  const skinCount = useAtomValue(persistedSkinCountAtom)
 
   const sortedSkins = useMemo(() => {
     if (!skins) return []
@@ -51,7 +53,7 @@ function SkinList() {
         )}
         {isLoadingUserSkins && (
           <div className="fade-in mt-px mr-3 flex animate-in flex-col gap-3">
-            {Array.from({ length: 3 }).map((_, i) => {
+            {Array.from({ length: skinCount }).map((_, i) => {
               return (
                 <Card
                   // biome-ignore lint/suspicious/noArrayIndexKey: intended; loading state

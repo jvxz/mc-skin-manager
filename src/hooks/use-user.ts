@@ -9,7 +9,6 @@ const UNLINK_MICROSOFT_ACCOUNT_KEY = ['unlink-user-microsoft-account']
 
 export function useUser() {
   const qc = useQueryClient()
-
   const { data: authData, isPending: isLoadingAuthData } = useSession()
 
   const { data: mojangData, isLoading: isLoadingMojangData } = useQuery({
