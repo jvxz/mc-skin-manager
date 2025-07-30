@@ -1,4 +1,4 @@
-import { IconLibrary, IconSettings } from '@tabler/icons-react'
+import { IconBoxModel, IconLibrary, IconSettings } from '@tabler/icons-react'
 import { Link } from 'next-view-transitions'
 import { InsetButtonsAuth } from './inset-buttons-auth'
 import { InsetButtonsCommandPalette } from './inset-buttons-command-palette'
@@ -14,6 +14,11 @@ function InsetButtons() {
         <Separator />
         <Button variant="ghost" className="size-16" asChild>
           <Link href="/">
+            <IconBoxModel className="!size-8" />
+          </Link>
+        </Button>
+        <Button variant="ghost" className="size-16" asChild>
+          <Link href="/library">
             <IconLibrary className="!size-8" />
           </Link>
         </Button>
