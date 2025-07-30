@@ -8,6 +8,13 @@ const nextConfig: NextConfig = {
   experimental: {
     reactCompiler: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        hostname: '*.ufs.sh',
+      },
+    ],
+  },
   logging: {
     fetches: {
       fullUrl: true,

@@ -76,6 +76,7 @@ export const skins = pgTable('skins', {
   source: text('source')
     .notNull()
     .$type<'USERNAME' | 'UUID' | 'URL' | 'NAME_MC' | 'FILE_UPLOAD'>(),
+  thumbnailUrl: text('thumbnail_url').notNull(),
   userId: text('user_id')
     .notNull()
     .references(() => user.id, { onDelete: 'cascade' }),

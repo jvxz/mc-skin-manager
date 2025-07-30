@@ -15,7 +15,7 @@ export const sortByAtom = atom<'newest' | 'oldest' | 'a-z' | 'z-a'>('newest')
 
 function SkinList() {
   const scrollRef = useRef<HTMLDivElement>(null)
-  const { skins } = useSkin()
+  const { skins, isLoadingUserSkins } = useSkin()
   const sortBy = useAtomValue(sortByAtom)
 
   const sortedSkins = useMemo(() => {
@@ -36,7 +36,7 @@ function SkinList() {
     <div className="flex flex-col gap-3">
       <SkinListHeader />
       <div className="h-full">
-        {skins && (
+        {!isLoadingUserSkins && (
           <ScrollArea type="always" className="h-full" ref={scrollRef}>
             <Virtualizer overscan={16} scrollRef={scrollRef}>
               {sortedSkins.map(skin => (
@@ -49,7 +49,7 @@ function SkinList() {
             </Virtualizer>
           </ScrollArea>
         )}
-        {!skins && (
+        {isLoadingUserSkins && (
           <div className="fade-in mt-px mr-3 flex animate-in flex-col gap-3">
             {Array.from({ length: 3 }).map((_, i) => {
               return (

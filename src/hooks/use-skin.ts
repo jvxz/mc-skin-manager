@@ -6,6 +6,7 @@ import {
 } from '@tanstack/react-query'
 import { useAtom } from 'jotai'
 import { toast } from 'sonner'
+import { generateThumbnail } from '@/actions/client/skin/generate-thumbnail'
 import { getSkinData } from '@/actions/client/skin/get-skin-data'
 import { applySkinToMc } from '@/actions/server/user/apply-skin-to-mc'
 import { deleteUserSkin as deleteSkinAction } from '@/actions/server/user/delete-skin'
@@ -13,6 +14,7 @@ import { getUserSkins } from '@/actions/server/user/get-skins'
 import { migrateLocalSkinsToUser } from '@/actions/server/user/migrate-skins'
 import { postUserSkin as postSkinAction } from '@/actions/server/user/post-skin'
 import { renameUserSkin } from '@/actions/server/user/rename-skin'
+import { postThumbnailToUI } from '@/actions/server/utils/post-thumbnail-to-ut'
 import { useSession } from '@/auth/client'
 import { currentSkinAtom } from '@/components/skin/viewer-canvas'
 import type { Skin } from '@/db/schema'
@@ -33,7 +35,11 @@ function useSkin() {
   const [currentSkin, setCurrentSkin] = useAtom(currentSkinAtom)
   const [localSkins, setLocalSkins] = useAtom(localSkinsAtom)
 
-  const { data: userSkins, refetch: _refetchSkins } = useQuery({
+  const {
+    data: userSkins,
+    refetch: _refetchSkins,
+    isLoading: isLoadingUserSkins,
+  } = useQuery({
     queryFn: () => getUserSkins(),
     queryKey: [GET_SKINS_KEY],
   })
@@ -48,6 +54,7 @@ function useSkin() {
         const newSkin = {
           ...skin,
           skinUrl: '',
+          thumbnailUrl: '',
           userId: 'local',
         }
 
@@ -58,7 +65,10 @@ function useSkin() {
 
       addSkinOptimistically(skin)
 
-      return postSkinAction(skin)
+      const thumbnail = await generateThumbnail(skin)
+      const thumbnailUrl = await postThumbnailToUI(thumbnail)
+
+      return postSkinAction({ ...skin, thumbnailUrl })
     },
     mutationKey: [POST_SKIN_KEY],
     onError: err => {
@@ -199,6 +209,7 @@ function useSkin() {
       skinType: 'CLASSIC',
       skinUrl: '',
       source: 'URL',
+      thumbnailUrl: '',
       userId: '',
       uuid: '',
     }
@@ -224,8 +235,15 @@ function useSkin() {
     )
   }
 
-  function addSkinOptimistically(skinInput: Omit<Skin, 'userId' | 'skinUrl'>) {
-    const skin: Skin = { ...skinInput, skinUrl: '', userId: '' }
+  function addSkinOptimistically(
+    skinInput: Omit<Skin, 'userId' | 'skinUrl' | 'thumbnailUrl'>,
+  ) {
+    const skin: Skin = {
+      ...skinInput,
+      skinUrl: '',
+      thumbnailUrl: '',
+      userId: '',
+    }
 
     setCurrentSkin(skin)
 
@@ -262,6 +280,7 @@ function useSkin() {
   return {
     applySkin,
     deleteSkin,
+    isLoadingUserSkins,
     isMutating,
     migrateLocalSkins,
     postSkin,

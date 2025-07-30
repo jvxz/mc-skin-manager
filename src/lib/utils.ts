@@ -16,7 +16,7 @@ export function timeAgo(date: Date) {
 }
 
 export function formatDate(date: Date) {
-  return dayjs(date).format('DD/MM/YYYY')
+  return dayjs(date).format('MMM D, YYYY')
 }
 
 type NameMCResult =
@@ -67,4 +67,10 @@ export function validateNameMC(link: string | File): NameMCResult {
   }
 
   return false
+}
+
+export function formatSkinType(skinType: 'SLIM' | 'CLASSIC') {
+  return (
+    skinType.charAt(0).toUpperCase() + skinType.slice(1).toLocaleLowerCase()
+  )
 }
