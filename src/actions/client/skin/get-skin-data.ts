@@ -8,7 +8,7 @@ import { validateNameMC } from '@/lib/utils'
 
 export async function getSkinData(
   input: File | string,
-): Promise<Omit<Skin, 'userId' | 'skinUrl'>> {
+): Promise<Omit<Skin, 'userId' | 'skinUrl' | 'thumbnailUrl'>> {
   const now = new Date()
 
   const isFile = input instanceof File
