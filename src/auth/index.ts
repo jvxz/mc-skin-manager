@@ -3,12 +3,14 @@ import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { db } from '@/db'
 import { schema } from '@/db/schema'
 import { env } from '@/env'
+import { nextCookies } from 'better-auth/next-js'
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: 'pg',
     schema,
   }),
+
   socialProviders: {
     discord: {
       clientId: env.NEXT_PUBLIC_DISCORD_CLIENT_ID,
@@ -18,10 +20,10 @@ export const auth = betterAuth({
       clientId: env.NEXT_PUBLIC_GITHUB_CLIENT_ID,
       clientSecret: env.GITHUB_CLIENT_SECRET,
     },
-    // microsoft: {
-    //   clientId: env.NEXT_PUBLIC_MICROSOFT_CLIENT_ID,
-    //   clientSecret: env.MICROSOFT_CLIENT_SECRET,
-    //   prompt: 'select_account',
-    // },
+  },
+  user: {
+    deleteUser: {
+      enabled: true,
+    },
   },
 })
