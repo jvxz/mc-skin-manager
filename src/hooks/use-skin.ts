@@ -196,7 +196,14 @@ function useSkin() {
 
   const { mutate: migrateLocalSkins } = useMutation({
     mutationFn: async () => {
-      await migrateLocalSkinsToUser(localSkins)
+      const skinsToMigrate = await Promise.all(
+        localSkins.map(async skin => ({
+          localSkin: skin,
+          thumbnailB64: await generateThumbnail(skin),
+        })),
+      )
+
+      await migrateLocalSkinsToUser(skinsToMigrate)
       await refetchSkins()
 
       const newCount = localSkins.length + (userSkins?.length ?? 0)
