@@ -96,6 +96,7 @@ function SkinListHeader() {
           <Button
             variant="ghost"
             size="icon"
+            isLoading={isMutating}
             className="-translate-y-1/2 absolute end-1.5 top-1/2 flex size-6 items-center justify-center rounded-full text-muted-foreground/80 peer-disabled:opacity-50">
             <IconArrowRight size={16} aria-hidden="true" />
           </Button>
