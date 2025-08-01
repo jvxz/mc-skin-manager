@@ -14,7 +14,7 @@ import { getUserSkins } from '@/actions/server/user/get-skins'
 import { migrateLocalSkinsToUser } from '@/actions/server/user/migrate-skins'
 import { postUserSkin as postSkinAction } from '@/actions/server/user/post-skin'
 import { renameUserSkin } from '@/actions/server/user/rename-skin'
-import { postThumbnailToUI } from '@/actions/server/utils/post-thumbnail-to-ut'
+import { postThumbnailToUT } from '@/actions/server/utils/post-thumbnail-to-ut'
 import { useSession } from '@/auth/client'
 import { currentSkinAtom } from '@/components/skin/viewer-canvas'
 import type { Skin } from '@/db/schema'
@@ -73,7 +73,7 @@ function useSkin() {
       addSkinOptimistically(skin)
 
       const thumbnail = await generateThumbnail(skin)
-      const thumbnailUrl = await postThumbnailToUI(thumbnail)
+      const thumbnailUrl = await postThumbnailToUT(thumbnail)
 
       setSkinCount(prev => prev + 1)
 

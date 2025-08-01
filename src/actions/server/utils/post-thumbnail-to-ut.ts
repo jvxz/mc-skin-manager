@@ -1,7 +1,7 @@
 'use server'
 import { UTApi } from 'uploadthing/server'
 
-export async function postThumbnailToUI(thumbnail: string) {
+export async function postThumbnailToUT(thumbnail: string) {
   const ut = new UTApi()
 
   const thumbnailFileBuffer = Buffer.from(thumbnail, 'base64')
